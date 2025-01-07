@@ -25,7 +25,7 @@ const AuthLogin = () => {
           Don't have an account?
           <Link
             className="font-medium ml-2 text-primary hover:underline"
-            to="/auth/login"
+            to="/auth/register"
           >
             Register
           </Link>
