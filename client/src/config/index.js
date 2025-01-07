@@ -222,3 +222,5 @@ export const addressFormControls = [
         placeholder: "Enter any additional notes",
     },
 ];
+
+export const apiUrl = `http://localhost:5000`;
