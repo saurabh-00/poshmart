@@ -1,4 +1,3 @@
-import { useId } from "react";
 import { Input } from "../ui/input";
 import { Textarea } from "../ui/textarea";
 import {
@@ -17,7 +16,7 @@ const CommonForm = ({
   setFormData,
   onSubmit,
   buttonText,
-  isBtnDisabled = false
+  isBtnDisabled = false,
 }) => {
   const renderInputsByComponentType = ({
     name,
@@ -70,7 +69,7 @@ const CommonForm = ({
             <SelectContent>
               {options && options.length > 0
                 ? options.map((option) => (
-                    <SelectItem key={useId()} value={option.id}>
+                    <SelectItem key={option.id} value={option.id}>
                       {option.label}
                     </SelectItem>
                   ))
@@ -78,6 +77,7 @@ const CommonForm = ({
             </SelectContent>
           </Select>
         );
+        break;
       default:
         element = (
           <Input
@@ -101,7 +101,7 @@ const CommonForm = ({
     <form onSubmit={onSubmit}>
       <div className="flex flex-col gap-3">
         {formControls.map((controlItem) => (
-          <div key={useId()} className="grid w-full gap-1.5">
+          <div key={controlItem.name} className="grid w-full gap-1.5">
             <Label>{controlItem.label}</Label>
             {renderInputsByComponentType(controlItem)}
           </div>

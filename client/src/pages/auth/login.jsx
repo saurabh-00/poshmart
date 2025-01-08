@@ -23,6 +23,7 @@ const AuthLogin = () => {
         toast({
           title: data?.payload?.message,
         });
+        setFormData(initialState);
       } else {
         toast({
           title: data?.payload?.message,

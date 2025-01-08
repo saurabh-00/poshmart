@@ -25,6 +25,7 @@ const AuthRegister = () => {
         toast({
           title: data?.payload?.message,
         });
+        setFormData(initialState);
         navigate("/auth/login");
       } else {
         toast({
