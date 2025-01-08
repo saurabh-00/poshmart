@@ -1,23 +1,30 @@
 import { Sheet, SheetContent, SheetHeader, SheetTitle } from "../ui/sheet";
-import { useNavigate } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 import { SquareUserRound } from "lucide-react";
 import { adminSidebarMenuItems } from "@/config";
 
 const MenuItems = ({ setOpen }) => {
   const navigate = useNavigate();
+  const location = useLocation();
 
   return (
     <nav className="mt-8 flex-col flex gap-2">
       {adminSidebarMenuItems.map((menuItem) => {
         const Icon = menuItem.icon;
+        const isActive = location.pathname === menuItem.path;
         return (
           <div
             key={menuItem.id}
             onClick={() => {
               navigate(menuItem.path);
-              setOpen ? setOpen(false) : null;;
+              setOpen ? setOpen(false) : null;
             }}
-            className="flex cursor-pointer text-xl items-center gap-2 rounded-md px-3 py-2 text-muted-foreground hover:bg-muted hover:text-foreground"
+            className={`flex cursor-pointer text-xl items-center gap-2 rounded-md px-3 py-2 
+              ${
+                isActive
+                  ? "bg-muted text-foreground font-semibold"
+                  : "text-muted-foreground hover:bg-muted hover:text-foreground"
+              }`}
           >
             <Icon />
             <span>{menuItem.label}</span>
