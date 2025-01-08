@@ -3,7 +3,7 @@ import { useNavigate } from "react-router-dom";
 import { SquareUserRound } from "lucide-react";
 import { adminSidebarMenuItems } from "@/config";
 
-const MenuItems = () => {
+const MenuItems = ({ setOpen }) => {
   const navigate = useNavigate();
 
   return (
@@ -13,7 +13,10 @@ const MenuItems = () => {
         return (
           <div
             key={menuItem.id}
-            onClick={() => navigate(menuItem.path)}
+            onClick={() => {
+              navigate(menuItem.path);
+              setOpen ? setOpen(false) : null;;
+            }}
             className="flex cursor-pointer text-xl items-center gap-2 rounded-md px-3 py-2 text-muted-foreground hover:bg-muted hover:text-foreground"
           >
             <Icon />
@@ -25,12 +28,12 @@ const MenuItems = () => {
   );
 };
 
-const AdminSideBar = () => {
+const AdminSideBar = ({ open, setOpen }) => {
   const navigate = useNavigate();
 
   return (
     <>
-      <Sheet>
+      <Sheet open={open} onOpenChange={setOpen}>
         <SheetContent side="left" className="w-64">
           <div className="flex flex-col h-full">
             <SheetHeader className="border-b">
@@ -39,7 +42,7 @@ const AdminSideBar = () => {
                 <h1 className="text-2xl font-bold">Admin Panel</h1>
               </SheetTitle>
             </SheetHeader>
-            <MenuItems />
+            <MenuItems setOpen={setOpen} />
           </div>
         </SheetContent>
       </Sheet>
