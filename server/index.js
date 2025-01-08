@@ -11,7 +11,11 @@ dotenv.config();
 const app = express();
 
 app.use(express.json());
-app.use(cors());
+app.use(cors({
+    origin: process.env.APP_URL,
+    credentials: true,
+    preflightContinue: true
+}));
 app.use(cookieParser());
 
 /* ROUTES */
