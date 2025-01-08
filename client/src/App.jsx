@@ -15,7 +15,6 @@ import AdminOrders from "./pages/admin/orders";
 
 import NotFound from "./pages/not-found";
 
-
 const App = () => {
   const { isAuthenticated, user, isLoading } = useSelector(
     (state) => state.auth
@@ -61,10 +60,10 @@ const App = () => {
             </CheckAuth>
           }
         >
-          <Route path="dashboard" element={AdminDashboard} />
-          <Route path="products" element={AdminProducts} />
-          <Route path="features" element={AdminFeatures} />
-          <Route path="orders" element={AdminOrders} />
+          <Route path="dashboard" element={<AdminDashboard />} />
+          <Route path="products" element={<AdminProducts />} />
+          <Route path="features" element={<AdminFeatures />} />
+          <Route path="orders" element={<AdminOrders />} />
         </Route>
 
         <Route path="*" element={<NotFound />} />
