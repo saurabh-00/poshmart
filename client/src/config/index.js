@@ -1,3 +1,5 @@
+import { LayoutDashboard, ShoppingBag, ShoppingBasket } from "lucide-react";
+
 export const registerFormControls = [
     {
         name: "username",
@@ -220,6 +222,27 @@ export const addressFormControls = [
         name: "notes",
         componentType: "textarea",
         placeholder: "Enter any additional notes",
+    },
+];
+
+export const adminSidebarMenuItems = [
+    {
+        id: "dashboard",
+        label: "Dashboard",
+        path: "/admin/dashboard",
+        icon: LayoutDashboard,
+    },
+    {
+        id: "products",
+        label: "Products",
+        path: "/admin/products",
+        icon: ShoppingBasket,
+    },
+    {
+        id: "orders",
+        label: "Orders",
+        path: "/admin/orders",
+        icon: ShoppingBag,
     },
 ];
 

@@ -3,10 +3,16 @@ import { Routes, Route } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import { checkAuthUser } from "./store/auth-slice";
 import { Skeleton } from "./components/ui/skeleton";
+import CheckAuth from "./components/common/check-auth";
 import AuthLayout from "./components/auth/layout";
 import AuthRegister from "./pages/auth/register";
 import AuthLogin from "./pages/auth/login";
-import CheckAuth from "./components/common/check-auth";
+import AdminLayout from "./components/admin/layout";
+import AdminDashboard from "./pages/admin/dashboard";
+import AdminProducts from "./pages/admin/products";
+import AdminFeatures from "./pages/admin/features";
+import AdminOrders from "./pages/admin/orders";
+
 import NotFound from "./pages/not-found";
 
 
@@ -45,6 +51,20 @@ const App = () => {
         >
           <Route path="register" element={<AuthRegister />} />
           <Route path="login" element={<AuthLogin />} />
+        </Route>
+
+        <Route
+          path="/admin"
+          element={
+            <CheckAuth isAuthenticated={isAuthenticated} user={user}>
+              <AdminLayout />
+            </CheckAuth>
+          }
+        >
+          <Route path="dashboard" element={AdminDashboard} />
+          <Route path="products" element={AdminProducts} />
+          <Route path="features" element={AdminFeatures} />
+          <Route path="orders" element={AdminOrders} />
         </Route>
 
         <Route path="*" element={<NotFound />} />
