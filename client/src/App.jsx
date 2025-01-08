@@ -1,13 +1,14 @@
-import { BrowserRouter, Routes, Route } from "react-router-dom";
+import { useEffect } from "react";
+import { Routes, Route } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
+import { checkAuthUser } from "./store/auth-slice";
 import { Skeleton } from "./components/ui/skeleton";
 import AuthLayout from "./components/auth/layout";
 import AuthRegister from "./pages/auth/register";
 import AuthLogin from "./pages/auth/login";
 import CheckAuth from "./components/common/check-auth";
 import NotFound from "./pages/not-found";
-import { useEffect } from "react";
-import { checkAuthUser } from "./store/auth-slice";
+
 
 const App = () => {
   const { isAuthenticated, user, isLoading } = useSelector(
