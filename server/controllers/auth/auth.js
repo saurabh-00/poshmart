@@ -65,7 +65,11 @@ const loginUser = async (req, res) => {
             role: user.role
         }, process.env.JWT_SECRET_KEY, { expiresIn: "7d" });
 
-        return res.cookie("token", token, { httpOnly: true, secure: false }).json({
+        return res.cookie("token", token, {
+            httpOnly: true,
+            secure: process.env.NODE_ENV === "PROD",
+            maxAge: 1000 * 60 * 60 * 24 * 7
+        }).json({
             success: true,
             message: "Logged in successfully",
             user: {
