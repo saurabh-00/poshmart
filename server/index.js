@@ -4,6 +4,7 @@ const cookieParser = require('cookie-parser');
 const mongoose = require('mongoose');
 const dotenv = require('dotenv');
 const authRouter = require('./routes/auth/auth');
+const adminProductsRouter = require('./routes/admin/products');
 
 dotenv.config();
 
@@ -20,6 +21,7 @@ app.use(cookieParser());
 
 /* ROUTES */
 app.use('/auth', authRouter);
+app.use('/admin/products', adminProductsRouter);
 
 /* MONGOOSE SETUP */
 const PORT = process.env.PORT || 5000;
