@@ -28,8 +28,17 @@ const AdminProducts = () => {
   const [currentProductId, setCurrentProductId] = useState(null);
   const [formData, setFormData] = useState(initialFormData);
   const [imageFile, setImageFile] = useState(null);
+  const [imageLoadingState, setImageLoadingState] = useState(false);
+  const [uploadedImageUrl, setUploadedImageUrl] = useState("");
 
   const onSubmit = () => {};
+
+  const isFormValid = () => {
+    return Object.keys(formData)
+      .filter((currentKey) => currentKey !== "averageReview")
+      .map((key) => formData[key] !== "")
+      .every((item) => item);
+  };
 
   return (
     <>
@@ -54,7 +63,14 @@ const AdminProducts = () => {
               {currentProductId !== null ? "Edit Product" : "Add New Product"}
             </SheetTitle>
           </SheetHeader>
-          <ProductImageUpload imageFile={imageFile} setImageFile={setImageFile}  />
+          <ProductImageUpload
+            imageFile={imageFile}
+            setImageFile={setImageFile}
+            imageLoadingState={imageLoadingState}
+            setImageLoadingState={setImageLoadingState}
+            uploadedImageUrl={uploadedImageUrl}
+            setUploadedImageUrl={setUploadedImageUrl}
+          />
           <div className="py-6">
             <CommonForm
               formControls={addProductFormElements}
@@ -62,6 +78,7 @@ const AdminProducts = () => {
               setFormData={setFormData}
               onSubmit={onSubmit}
               buttonText={currentProductId !== null ? "Edit" : "Add"}
+              isBtnDisabled={!isFormValid()}
             />
           </div>
         </SheetContent>

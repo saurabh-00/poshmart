@@ -1,25 +1,27 @@
-const { uploadToCloudinary } = require('../../helpers/cloudinary');
+const { uploadImageToCloudinary } = require('../../helpers/cloudinary');
 
-const handleUpload = async (req, res) => {
+const productImageUpload = async (req, res) => {
     try {
         if (!req.file) {
-            return res.status(400).json({ message: 'No file uploaded' });
+            return res.status(400).json({ message: 'No image uploaded' });
         }
 
-        const result = await uploadToCloudinary(req.file.buffer);
+        const folder = 'products';
+        const result = await uploadImageToCloudinary(req.file.buffer, folder);
 
         res.status(200).json({
             success: true,
-            message: "File uploaded successfully",
-            url: result.secure_url
+            message: "Image uploaded successfully",
+            url: result.secure_url,
+            public_id: result.public_id
         });
     } catch (e) {
         console.log(e);
         return res.status(500).json({
             success: false,
-            message: e.message || 'File upload failed'
+            message: e.message || 'Image upload failed'
         });
     }
 }
 
-module.exports = { handleUpload };
+module.exports = { productImageUpload };

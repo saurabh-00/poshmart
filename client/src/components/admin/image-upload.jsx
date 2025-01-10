@@ -6,10 +6,13 @@ import { Button } from "../ui/button";
 import axios from "axios";
 import { apiUrl } from "@/config";
 import { useToast } from "@/hooks/use-toast";
+import { Skeleton } from "../ui/skeleton";
 
 const ProductImageUpload = ({
   imageFile,
   setImageFile,
+  imageLoadingState,
+  setImageLoadingState,
   uploadedImageUrl,
   setUploadedImageUrl,
   isCustomStyling = false,
@@ -19,6 +22,7 @@ const ProductImageUpload = ({
 
   const uploadImageToCloudinary = async () => {
     try {
+      setImageLoadingState(true);
       const data = new FormData();
       data.append("image", imageFile);
       const response = await axios.post(
@@ -28,15 +32,18 @@ const ProductImageUpload = ({
       );
       if (response?.data?.success) {
         setUploadedImageUrl(response.data.url);
+        setImageLoadingState(false);
         toast({
-          title: response.data.message,
+          title: response?.data?.message || "Image uploaded successfully",
         });
       } else {
-        throw new Error("Failed to upload file");
+        throw new Error("Failed to upload image");
       }
     } catch (e) {
+      setImageLoadingState(false);
+      handleRemoveImage();
       toast({
-        title: "Failed to upload file",
+        title: e?.response?.data?.message || "Failed to upload image",
         variant: "destructive",
       });
     }
@@ -97,6 +104,8 @@ const ProductImageUpload = ({
             <CloudUpload className="w-10 h-10 text-muted-foreground mb-2" />
             <span>Drag & Drop OR Click To Upload Image</span>
           </Label>
+        ) : imageLoadingState ? (
+          <Skeleton className="h-10 bg-gray-100" />
         ) : (
           <div className="flex items-center justify-between">
             <FileImage className="w-8 h-8 text-primary mr-2" />

@@ -10,21 +10,25 @@ cloudinary.config({
     api_secret: process.env.CLOUDINARY_API_SECRET
 });
 
-const uploadToCloudinary = (buffer) => {
+const uploadImageToCloudinary = (buffer, folder = null) => {
     return new Promise((resolve, reject) => {
+        const options = folder ? { folder } : {};
         const stream = cloudinary.uploader.upload_stream({
-            folder: 'products'
-        }, (error, result) => {
-            if (error) {
-                reject(error);
-            } else {
-                resolve(result);
-            }
-        });
+            ...options,
+            resource_type: 'image',
+            allowed_formats: ["gif", "png", "jpg", "bmp", "ico", "tiff", "jpc", "jp2", "psd", "webp", "svg", "wdp", "djvu", "ai", "flif", "bpg", "miff", "tga", "heic"]
+        },
+            (error, result) => {
+                if (error) {
+                    reject(error);
+                } else {
+                    resolve(result);
+                }
+            });
         streamifier.createReadStream(buffer).pipe(stream);
     });
 };
 
 const upload = multer({ storage: multer.memoryStorage() });
 
-module.exports = { uploadToCloudinary, upload };
+module.exports = { uploadImageToCloudinary, upload };
