@@ -11,18 +11,16 @@ const registerUser = async (req, res) => {
         if (userExists) {
             return res.json({
                 success: false,
-                message: "User already exists with the same email! Please try again",
+                message: "User already exists with the same email! Please try again"
             });
         }
 
         const hashPassword = await bcrypt.hash(password, 10);
-        const newUser = new User({
+        await User.create({
             username,
             email,
             password: hashPassword,
         });
-
-        await newUser.save();
 
         return res.status(201).json({
             success: true,
@@ -46,7 +44,7 @@ const loginUser = async (req, res) => {
         if (!user) {
             return res.json({
                 success: false,
-                message: "User doesn't exists! Please register first",
+                message: "User doesn't exists! Please register first"
             });
         }
 
@@ -54,7 +52,7 @@ const loginUser = async (req, res) => {
         if (!passwordMatch) {
             return res.json({
                 success: false,
-                message: "Incorrect password! Please try again",
+                message: "Incorrect password! Please try again"
             });
         }
 
@@ -73,10 +71,10 @@ const loginUser = async (req, res) => {
             success: true,
             message: "Logged in successfully",
             user: {
-                email: user.email,
-                role: user.role,
                 id: user.id,
                 username: user.username,
+                email: user.email,
+                role: user.role
             }
         });
     } catch (e) {
@@ -92,7 +90,7 @@ const loginUser = async (req, res) => {
 const logoutUser = (req, res) => {
     return res.clearCookie("token").json({
         success: true,
-        message: "Logged out successfully!",
+        message: "Logged out successfully!"
     });
 }
 

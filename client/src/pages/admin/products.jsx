@@ -1,4 +1,5 @@
 import ProductImageUpload from "@/components/admin/image-upload";
+import AdminProductTile from "@/components/admin/product-tile";
 import CommonForm from "@/components/common/form";
 import { Button } from "@/components/ui/button";
 import {
@@ -8,8 +9,16 @@ import {
   SheetTitle,
 } from "@/components/ui/sheet";
 import { addProductFormElements } from "@/config";
+import { useToast } from "@/hooks/use-toast";
+import {
+  addProduct,
+  deleteProduct,
+  fetchProducts,
+  updateProduct,
+} from "@/store/admin/products-slice";
 import { Plus } from "lucide-react";
-import { useState } from "react";
+import { useEffect, useState } from "react";
+import { useDispatch, useSelector } from "react-redux";
 
 const initialFormData = {
   image: null,
@@ -31,7 +40,47 @@ const AdminProducts = () => {
   const [imageLoadingState, setImageLoadingState] = useState(false);
   const [uploadedImageUrl, setUploadedImageUrl] = useState("");
 
-  const onSubmit = () => {};
+  const { products, isLoading } = useSelector((state) => state.adminProducts);
+  const dispatch = useDispatch();
+
+  const { toast } = useToast();
+
+  useEffect(() => {
+    dispatch(fetchProducts());
+  }, [dispatch]);
+
+  const onSubmit = (e) => {
+    e.preventDefault();
+    if (currentProductId !== null) {
+      dispatch(updateProduct({ id: currentProductId, formData })).then(
+        (data) => {
+          if (data.payload.success) {
+            setCurrentProductId(null);
+            setFormData(initialFormData);
+            setOpenProductForm(false);
+          }
+        }
+      );
+    } else {
+      dispatch(addProduct({ ...formData, image: uploadedImageUrl })).then(
+        (data) => {
+          if (data.payload.success) {
+            toast({
+              title: data.payload.message,
+            });
+            setImageFile(null);
+            setUploadedImageUrl(null);
+            setFormData(initialFormData);
+            setOpenProductForm(false);
+          }
+        }
+      );
+    }
+  };
+
+  const handleDelete = (productId) => {
+    dispatch(deleteProduct(productId));
+  };
 
   const isFormValid = () => {
     return Object.keys(formData)
@@ -48,7 +97,18 @@ const AdminProducts = () => {
           Add New Product
         </Button>
       </div>
-
+      <div className="grid gap-4 md:grid-cols-2 xl:grid-cols-3 2xl:grid-cols-4">
+        {!!products.length &&
+          products.map((product) => (
+            <AdminProductTile
+              product={product}
+              setOpenProductForm={setOpenProductForm}
+              setFormData={setFormData}
+              setCurrentProductId={setCurrentProductId}
+              handleDelete={handleDelete}
+            />
+          ))}
+      </div>
       <Sheet
         open={openProductForm}
         onOpenChange={() => {

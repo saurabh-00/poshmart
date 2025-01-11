@@ -26,7 +26,7 @@ const ProductImageUpload = ({
       const data = new FormData();
       data.append("image", imageFile);
       const response = await axios.post(
-        `${apiUrl}/admin/products/upload`,
+        `${apiUrl}/admin/products/upload-image`,
         data,
         { withCredentials: true }
       );
