@@ -12,7 +12,14 @@ import AdminDashboard from "./pages/admin/dashboard";
 import AdminProducts from "./pages/admin/products";
 import AdminFeatures from "./pages/admin/features";
 import AdminOrders from "./pages/admin/orders";
-
+import ShoppingLayout from "./components/shopping/layout";
+import ShoppingHome from "./pages/shopping/home";
+import ShoppingListing from "./pages/shopping/listing";
+import ShoppingAccount from "./pages/shopping/account";
+import ShoppingCheckout from "./pages/shopping/checkout";
+import PaymentSuccess from "./pages/shopping/payment-success";
+import PaypalReturn from "./pages/shopping/paypal-return";
+import SearchProducts from "./pages/shopping/search";
 import NotFound from "./pages/not-found";
 
 const App = () => {
@@ -64,6 +71,23 @@ const App = () => {
           <Route path="products" element={<AdminProducts />} />
           <Route path="features" element={<AdminFeatures />} />
           <Route path="orders" element={<AdminOrders />} />
+        </Route>
+
+        <Route
+          path="/shop"
+          element={
+            <CheckAuth isAuthenticated={isAuthenticated} user={user}>
+              <ShoppingLayout />
+            </CheckAuth>
+          }
+        >
+          <Route path="home" element={<ShoppingHome />} />
+          <Route path="listing" element={<ShoppingListing />} />
+          <Route path="account" element={<ShoppingAccount />} />
+          <Route path="checkout" element={<ShoppingCheckout />} />
+          <Route path="payment-success" element={<PaymentSuccess />} />
+          <Route path="payment-return" element={<PaypalReturn />} />
+          <Route path="search" element={<SearchProducts />} />
         </Route>
 
         <Route path="*" element={<NotFound />} />
