@@ -16,6 +16,7 @@ const ProductImageUpload = ({
   uploadedImageUrl,
   setUploadedImageUrl,
   isCustomStyling = false,
+  isEditMode = false,
 }) => {
   const inputRef = useRef(null);
   const { toast } = useToast();
@@ -61,16 +62,20 @@ const ProductImageUpload = ({
 
   const handleDrop = (e) => {
     e.preventDefault();
-    const droppedFile = e.dataTransfer.files[0];
-    if (droppedFile) {
-      setImageFile(droppedFile);
+    if (!isEditMode) {
+      const droppedFile = e.dataTransfer.files[0];
+      if (droppedFile) {
+        setImageFile(droppedFile);
+      }
     }
   };
 
   const handleImageFileChange = (e) => {
-    const selectedFile = e.target.files[0];
-    if (selectedFile) {
-      setImageFile(selectedFile);
+    if (!isEditMode) {
+      const selectedFile = e.target.files[0];
+      if (selectedFile) {
+        setImageFile(selectedFile);
+      }
     }
   };
 
@@ -85,7 +90,9 @@ const ProductImageUpload = ({
     <div className={`w-full mt-4 ${isCustomStyling ? "" : "max-w-md mx-auto"}`}>
       <Label className="text-sm font-medium mb-2 block">Upload Image</Label>
       <div
-        className="border-2 border-dashed rounded-lg p-4"
+        className={`${
+          isEditMode ? "opacity-60" : ""
+        } border-2 border-dashed rounded-lg p-4`}
         onDragOver={handleDrageOver}
         onDrop={handleDrop}
       >
@@ -95,11 +102,14 @@ const ProductImageUpload = ({
           className="hidden"
           ref={inputRef}
           onChange={handleImageFileChange}
+          disabled={isEditMode}
         />
         {!imageFile ? (
           <Label
             htmlFor="image-upload"
-            className="flex flex-col items-center justify-center cursor-pointer h-32"
+            className={`${
+              isEditMode ? "cursor-not-allowed" : "cursor-pointer"
+            } flex flex-col items-center justify-center h-32`}
           >
             <CloudUpload className="w-10 h-10 text-muted-foreground mb-2" />
             <span>Drag & Drop OR Click To Upload Image</span>
