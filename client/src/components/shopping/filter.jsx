@@ -2,7 +2,7 @@ import { filterOptions } from "@/config";
 import { Label } from "../ui/label";
 import { Checkbox } from "../ui/checkbox";
 
-const ProductFilter = () => {
+const ProductFilter = ({ filters, handleFilters }) => {
   return (
     <div className="bg-secondary rounded-lg shadow-sm">
       <div className="p-4 border-b">
@@ -18,7 +18,14 @@ const ProductFilter = () => {
                   key={`${keyOption}_filter_${option.id}`}
                   className="flex font-normal items-center gap-2"
                 >
-                  <Checkbox />
+                  <Checkbox
+                    checked={
+                      filters &&
+                      filters.hasOwnProperty(keyOption) &&
+                      filters[keyOption].includes(option.id)
+                    }
+                    onCheckedChange={() => handleFilters(keyOption, option.id)}
+                  />
                   {option.label}
                 </Label>
               ))}
