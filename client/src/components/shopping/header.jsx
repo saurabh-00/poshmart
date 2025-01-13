@@ -17,8 +17,9 @@ import { Avatar, AvatarFallback } from "../ui/avatar";
 import { useDispatch, useSelector } from "react-redux";
 import { logoutUser } from "@/store/auth-slice";
 
-const ShopMenu = ({ setOpen }) => {
+const ShopMenu = ({ setOpenMenu }) => {
   const navigate = useNavigate();
+
   return (
     <nav className="flex flex-col gap-6 mb-3 lg:mb-0 lg:items-center lg:flex-row">
       {shoppingViewHeaderMenuItems.map((menuItem) => (
@@ -27,7 +28,7 @@ const ShopMenu = ({ setOpen }) => {
           className="text-sm font-medium cursor-pointer"
           onClick={() => {
             navigate(menuItem.path);
-            setOpen(false);
+            setOpenMenu(false);
           }}
         >
           {menuItem.label}
@@ -37,14 +38,14 @@ const ShopMenu = ({ setOpen }) => {
   );
 };
 
-const ShopDropdown = ({ setOpen }) => {
+const ShopDropdown = ({ setOpenMenu }) => {
   const { user } = useSelector((state) => state.auth);
   const dispatch = useDispatch();
   const navigate = useNavigate();
 
   const handleLogout = () => {
     dispatch(logoutUser());
-    setOpen(false);
+    setOpenMenu(false);
   };
 
   return (
@@ -64,7 +65,7 @@ const ShopDropdown = ({ setOpen }) => {
             className="cursor-pointer"
             onClick={() => {
               navigate("/shop/account");
-              setOpen(false);
+              setOpenMenu(false);
             }}
           >
             <UserRoundCog className="mr-2 h-4 w-4" />
@@ -82,22 +83,22 @@ const ShopDropdown = ({ setOpen }) => {
 };
 
 const ShoppingHeader = () => {
-  const [open, setOpen] = useState(false);
+  const [openMenu, setOpenMenu] = useState(false);
 
   return (
     <header className="sticky top-0 z-50 w-full border-b bg-background">
       <div className="flex h-16 items-center justify-between px-4 md:px-6">
         <Link to="/shop/home" className="flex items-center gap-2">
           <House className="h-6 w-6" />
-          <span className="font-bold">PoshMart</span>
+          <span className="text-2xl font-bold">PoshMart</span>
         </Link>
         <div className="hidden lg:block">
-          <ShopMenu setOpen={setOpen} />
+          <ShopMenu setOpenMenu={setOpenMenu} />
         </div>
         <div className="hidden lg:block">
-          <ShopDropdown setOpen={setOpen} />
+          <ShopDropdown setOpenMenu={setOpenMenu} />
         </div>
-        <Sheet open={open} onOpenChange={setOpen}>
+        <Sheet open={openMenu} onOpenChange={setOpenMenu}>
           <SheetTrigger asChild>
             <Button variant="outline" size="icon" className="lg:hidden">
               <AlignJustify className="h-6 w-6" />
@@ -105,8 +106,8 @@ const ShoppingHeader = () => {
             </Button>
           </SheetTrigger>
           <SheetContent side="left" className="w-full max-w-xs">
-            <ShopMenu setOpen={setOpen} />
-            <ShopDropdown setOpen={setOpen} />
+            <ShopMenu setOpenMenu={setOpenMenu} />
+            <ShopDropdown setOpenMenu={setOpenMenu} />
           </SheetContent>
         </Sheet>
       </div>
