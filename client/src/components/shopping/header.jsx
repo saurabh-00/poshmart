@@ -58,7 +58,7 @@ const ShopDropdown = ({ setOpenMenu }) => {
             </AvatarFallback>
           </Avatar>
         </DropdownMenuTrigger>
-        <DropdownMenuContent side="bottom" className="w-56">
+        <DropdownMenuContent align="end" className="w-56">
           <DropdownMenuLabel>Logged in as {user?.username}</DropdownMenuLabel>
           <DropdownMenuSeparator />
           <DropdownMenuItem

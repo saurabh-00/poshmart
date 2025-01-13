@@ -5,6 +5,7 @@ const mongoose = require('mongoose');
 const dotenv = require('dotenv');
 const authRouter = require('./routes/auth/auth');
 const adminProductsRouter = require('./routes/admin/products');
+const shopProductsRouter = require('./routes/shop/products');
 
 dotenv.config();
 
@@ -22,6 +23,7 @@ app.use(cookieParser());
 /* ROUTES */
 app.use('/auth', authRouter);
 app.use('/admin/products', adminProductsRouter);
+app.use('/shop/products', shopProductsRouter);
 
 /* MONGOOSE SETUP */
 const PORT = process.env.PORT || 5000;
