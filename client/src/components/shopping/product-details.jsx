@@ -40,12 +40,12 @@ const ProductDetails = ({ open, setOpen, productDetails }) => {
                 productDetails?.salePrice !== productDetails?.price
                   ? "line-through"
                   : ""
-              } text-3xl font-bold text-primary`}
+              } text-2xl font-bold text-primary`}
             >
               ${productDetails?.price}
             </span>
             {productDetails?.salePrice !== productDetails?.price ? (
-              <span className="text-3xl font-bold text-muted-foreground">
+              <span className="text-2xl font-bold text-muted-foreground">
                 ${productDetails?.salePrice}
               </span>
             ) : null}
