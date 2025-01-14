@@ -1,4 +1,5 @@
 import ProductFilter from "@/components/shopping/filter";
+import ProductDetails from "@/components/shopping/product-details";
 import ShoppingProductTile from "@/components/shopping/product-tile";
 import { Button } from "@/components/ui/button";
 import {
@@ -9,7 +10,10 @@ import {
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 import { sortOptions } from "@/config";
-import { fetchAllFilteredProducts } from "@/store/shop/products-slice";
+import {
+  fetchAllFilteredProducts,
+  fetchProductDetails,
+} from "@/store/shop/products-slice";
 import { ArrowUpDownIcon } from "lucide-react";
 import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
@@ -31,8 +35,12 @@ const ShoppingListing = () => {
   );
   const [sort, setSort] = useState(sortOptions[0].id);
   const [searchParams, setSearchParams] = useSearchParams();
+  const [openProductDetailsDialog, setOpenProductDetailsDialog] =
+    useState(false);
   const dispatch = useDispatch();
-  const { products } = useSelector((state) => state.shopProducts);
+  const { products, productDetails } = useSelector(
+    (state) => state.shopProducts
+  );
 
   const handleSort = (value) => {
     setSort(value);
@@ -82,6 +90,10 @@ const ShoppingListing = () => {
     });
   };
 
+  const handleProductClick = (productId) => {
+    dispatch(fetchProductDetails(productId));
+  };
+
   useEffect(() => {
     const queryString = createSearchParamsString(filters);
     setSearchParams(new URLSearchParams(queryString));
@@ -94,6 +106,12 @@ const ShoppingListing = () => {
       );
     }
   }, [dispatch, sort, filters]);
+
+  useEffect(() => {
+    if (productDetails !== null) {
+      setOpenProductDetailsDialog(true);
+    }
+  }, [productDetails]);
 
   return (
     <div className="grid grid-cols-1 md:grid-cols-[200px_1fr] gap-6 p-4 md:p-6">
@@ -138,10 +156,16 @@ const ShoppingListing = () => {
               <ShoppingProductTile
                 key={productItem?._id}
                 product={productItem}
+                handleProductClick={handleProductClick}
               />
             ))}
         </div>
       </div>
+      <ProductDetails
+        open={openProductDetailsDialog}
+        setOpen={setOpenProductDetailsDialog}
+        productDetails={productDetails}
+      />
     </div>
   );
 };

@@ -4,7 +4,7 @@ import { Checkbox } from "../ui/checkbox";
 
 const ProductFilter = ({ filters, handleFilters }) => {
   return (
-    <div className="bg-secondary rounded-lg shadow-sm">
+    <div className="bg-secondary rounded-lg shadow-sm max-h-fit">
       <div className="p-4 border-b">
         <h2 className="text-lg font-bold">Filters</h2>
       </div>
