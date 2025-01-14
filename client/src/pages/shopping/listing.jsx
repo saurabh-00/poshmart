@@ -13,10 +13,22 @@ import { fetchAllFilteredProducts } from "@/store/shop/products-slice";
 import { ArrowUpDownIcon } from "lucide-react";
 import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
+import { useSearchParams } from "react-router-dom";
+
+const createSearchParamsString = (filters) => {
+  let queryParams = [];
+  for (const [key, value] of Object.entries(filters)) {
+    if (Array.isArray(value) && value.length > 0) {
+      queryParams.push(`${key}=${encodeURIComponent(value.join(","))}`);
+    }
+  }
+  return queryParams.join("&");
+};
 
 const ShoppingListing = () => {
   const [filters, setFilters] = useState({});
   const [sort, setSort] = useState(null);
+  const [searchParams, setSearchParams] = useSearchParams();
   const dispatch = useDispatch();
   const { products } = useSelector((state) => state.shopProducts);
 
@@ -69,13 +81,24 @@ const ShoppingListing = () => {
   };
 
   useEffect(() => {
+    if (filters && Object.keys(filters).length) {
+      const queryString = createSearchParamsString(filters);
+      setSearchParams(new URLSearchParams(queryString));
+    }
+  }, [filters]);
+
+  useEffect(() => {
     setSort(sortOptions[0].id);
     setFilters(JSON.parse(sessionStorage.getItem("filters")) || {});
   }, []);
 
   useEffect(() => {
-    dispatch(fetchAllFilteredProducts());
-  }, [dispatch]);
+    if (filters !== null && sort !== null) {
+      dispatch(
+        fetchAllFilteredProducts({ filterParams: filters, sortParams: sort })
+      );
+    }
+  }, [dispatch, sort, filters]);
 
   return (
     <div className="grid grid-cols-1 md:grid-cols-[200px_1fr] gap-6 p-4 md:p-6">
