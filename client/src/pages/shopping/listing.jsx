@@ -26,8 +26,10 @@ const createSearchParamsString = (filters) => {
 };
 
 const ShoppingListing = () => {
-  const [filters, setFilters] = useState({});
-  const [sort, setSort] = useState(null);
+  const [filters, setFilters] = useState(
+    JSON.parse(sessionStorage.getItem("filters")) || {}
+  );
+  const [sort, setSort] = useState(sortOptions[0].id);
   const [searchParams, setSearchParams] = useSearchParams();
   const dispatch = useDispatch();
   const { products } = useSelector((state) => state.shopProducts);
@@ -81,16 +83,9 @@ const ShoppingListing = () => {
   };
 
   useEffect(() => {
-    if (filters && Object.keys(filters).length) {
-      const queryString = createSearchParamsString(filters);
-      setSearchParams(new URLSearchParams(queryString));
-    }
+    const queryString = createSearchParamsString(filters);
+    setSearchParams(new URLSearchParams(queryString));
   }, [filters]);
-
-  useEffect(() => {
-    setSort(sortOptions[0].id);
-    setFilters(JSON.parse(sessionStorage.getItem("filters")) || {});
-  }, []);
 
   useEffect(() => {
     if (filters !== null && sort !== null) {
