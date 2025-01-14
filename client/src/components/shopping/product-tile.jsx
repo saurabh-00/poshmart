@@ -5,7 +5,7 @@ import { Button } from "../ui/button";
 
 const ShoppingProductTile = ({ product, handleProductClick }) => {
   return (
-    <Card className="w-full max-w-sm mx-auto">
+    <Card className="w-full max-w-sm mx-auto cursor-pointer">
       <div onClick={() => handleProductClick(product?._id)}>
         <div className="relative">
           <img
@@ -46,7 +46,7 @@ const ShoppingProductTile = ({ product, handleProductClick }) => {
               ${product?.price}
             </span>
             {product?.salePrice !== product?.price ? (
-              <span className="text-lg font-semibold text-primary">
+              <span className="text-lg font-semibold text-muted-foreground">
                 ${product?.salePrice}
               </span>
             ) : null}

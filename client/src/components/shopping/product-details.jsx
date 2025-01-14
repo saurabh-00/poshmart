@@ -1,3 +1,4 @@
+import { brandOptionsMap, categoryOptionsMap } from "@/config";
 import { Button } from "../ui/button";
 import { Dialog, DialogContent } from "../ui/dialog";
 import { Separator } from "../ui/separator";
@@ -21,14 +22,24 @@ const ProductDetails = ({ open, setOpen, productDetails }) => {
         <div>
           <div>
             <h1 className="text-3xl font-bold">{productDetails?.title}</h1>
-            <p className="text-muted-foreground text-xl mb-5 mt-4">
+            <div className="flex justify-between items-center mt-1">
+              <span className="text-lg text-muted-foreground">
+                {categoryOptionsMap[productDetails?.category]}
+              </span>
+              <span className="text-lg text-muted-foreground">
+                {brandOptionsMap[productDetails?.brand]}
+              </span>
+            </div>
+            <p className="text-muted-foreground text-xl mb-5 mt-2">
               {productDetails?.description}
             </p>
           </div>
           <div className="flex justify-between items-center">
             <span
               className={`${
-                productDetails?.salePrice !== productDetails?.price ? "line-through" : ""
+                productDetails?.salePrice !== productDetails?.price
+                  ? "line-through"
+                  : ""
               } text-3xl font-bold text-primary`}
             >
               ${productDetails?.price}
