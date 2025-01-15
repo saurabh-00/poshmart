@@ -7,6 +7,6 @@ const router = express();
 router.post('/', auth, addToCart);
 router.get('/', auth, getCart);
 router.patch('/', auth, updateCart);
-router.delete('/', auth, removeFromCart);
+router.delete('/:productId', auth, removeFromCart);
 
 module.exports = router;

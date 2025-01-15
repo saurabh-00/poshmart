@@ -169,7 +169,7 @@ const updateCart = async (req, res) => {
 const removeFromCart = async (req, res) => {
     try {
         const { id: userId } = req.user;
-        const { productId } = req.body;
+        const { productId } = req.params;
 
         if (!productId) {
             return res.status(400).json({
