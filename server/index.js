@@ -6,6 +6,7 @@ const dotenv = require('dotenv');
 const authRouter = require('./routes/auth/auth');
 const adminProductsRouter = require('./routes/admin/products');
 const shopProductsRouter = require('./routes/shop/products');
+const shopCartRouter = require('./routes/shop/cart');
 
 dotenv.config();
 
@@ -24,6 +25,7 @@ app.use(cookieParser());
 app.use('/auth', authRouter);
 app.use('/admin/products', adminProductsRouter);
 app.use('/shop/products', shopProductsRouter);
+app.use('/shop/cart', shopCartRouter);
 
 /* MONGOOSE SETUP */
 const PORT = process.env.PORT || 5000;
