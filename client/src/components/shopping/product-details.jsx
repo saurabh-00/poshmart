@@ -2,11 +2,17 @@ import { brandOptionsMap, categoryOptionsMap } from "@/config";
 import { Button } from "../ui/button";
 import { Dialog, DialogContent } from "../ui/dialog";
 import { Separator } from "../ui/separator";
+import { setProductDetails } from "@/store/shop/products-slice";
+import { useDispatch } from "react-redux";
 
 const ProductDetails = ({ open, setOpen, productDetails }) => {
+  const dispatch = useDispatch();
+
   const handleDialogClose = () => {
     setOpen(false);
+    dispatch(setProductDetails());
   };
+  
   return (
     <Dialog open={open} onOpenChange={handleDialogClose}>
       <DialogContent className="grid grid-cols-1 gap-8 md:grid-cols-2 sm:p-12 max-w-[90vw] sm:max-w-[80vw] lg:max-w-[70vw]">

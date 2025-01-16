@@ -151,6 +151,7 @@ const updateCart = async (req, res) => {
         }
 
         cart.items[productIndex].quantity = quantity;
+        
         await cart.save();
 
         await cart.populate({
