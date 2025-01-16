@@ -1,10 +1,16 @@
-import { AlignJustify, House, LogOut, UserRoundCog } from "lucide-react";
+import {
+  AlignJustify,
+  House,
+  LogOut,
+  ShoppingCart,
+  UserRoundCog,
+} from "lucide-react";
 import { Sheet, SheetContent, SheetTrigger } from "../ui/sheet";
 import { Button } from "../ui/button";
 import { shoppingViewHeaderMenuItems } from "@/config";
 import { Label } from "../ui/label";
 import { Link, useNavigate } from "react-router-dom";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -16,6 +22,8 @@ import {
 import { Avatar, AvatarFallback } from "../ui/avatar";
 import { useDispatch, useSelector } from "react-redux";
 import { logoutUser } from "@/store/auth-slice";
+import { fetchCart } from "@/store/shop/cart-slice";
+import UserCartWrapper from "./cart-wrapper";
 
 const ShopMenu = ({ setOpenMenu }) => {
   const navigate = useNavigate();
@@ -49,41 +57,46 @@ const ShopDropdown = ({ setOpenMenu }) => {
   };
 
   return (
-    <div className="flex lg:items-center lg:flex-row flex-col gap-4">
-      <DropdownMenu>
-        <DropdownMenuTrigger asChild>
-          <Avatar className="bg-black cursor-pointer">
-            <AvatarFallback className="bg-black text-white font-extrabold">
-              {user?.username[0]?.toUpperCase()}
-            </AvatarFallback>
-          </Avatar>
-        </DropdownMenuTrigger>
-        <DropdownMenuContent align="end" className="w-56">
-          <DropdownMenuLabel>Logged in as {user?.username}</DropdownMenuLabel>
-          <DropdownMenuSeparator />
-          <DropdownMenuItem
-            className="cursor-pointer"
-            onClick={() => {
-              navigate("/shop/account");
-              setOpenMenu(false);
-            }}
-          >
-            <UserRoundCog className="mr-2 h-4 w-4" />
-            Account
-          </DropdownMenuItem>
-          <DropdownMenuSeparator />
-          <DropdownMenuItem className="cursor-pointer" onClick={handleLogout}>
-            <LogOut className="mr-2 h-4 w-4" />
-            Logout
-          </DropdownMenuItem>
-        </DropdownMenuContent>
-      </DropdownMenu>
-    </div>
+    <DropdownMenu>
+      <DropdownMenuTrigger asChild>
+        <Avatar className="bg-black cursor-pointer">
+          <AvatarFallback className="bg-black text-white font-extrabold">
+            {user?.username[0]?.toUpperCase()}
+          </AvatarFallback>
+        </Avatar>
+      </DropdownMenuTrigger>
+      <DropdownMenuContent align="end" className="w-56">
+        <DropdownMenuLabel>Logged in as {user?.username}</DropdownMenuLabel>
+        <DropdownMenuSeparator />
+        <DropdownMenuItem
+          className="cursor-pointer"
+          onClick={() => {
+            navigate("/shop/account");
+            setOpenMenu(false);
+          }}
+        >
+          <UserRoundCog className="mr-2 h-4 w-4" />
+          Account
+        </DropdownMenuItem>
+        <DropdownMenuSeparator />
+        <DropdownMenuItem className="cursor-pointer" onClick={handleLogout}>
+          <LogOut className="mr-2 h-4 w-4" />
+          Logout
+        </DropdownMenuItem>
+      </DropdownMenuContent>
+    </DropdownMenu>
   );
 };
 
 const ShoppingHeader = () => {
   const [openMenu, setOpenMenu] = useState(false);
+  const [openCartSheet, setOpenCartSheet] = useState(false);
+  const { cart } = useSelector((state) => state.shopCart);
+  const dispatch = useDispatch();
+
+  useEffect(() => {
+    dispatch(fetchCart());
+  }, [dispatch]);
 
   return (
     <header className="sticky top-0 z-50 w-full border-b bg-background">
@@ -95,21 +108,40 @@ const ShoppingHeader = () => {
         <div className="hidden lg:block">
           <ShopMenu setOpenMenu={setOpenMenu} />
         </div>
-        <div className="hidden lg:block">
-          <ShopDropdown setOpenMenu={setOpenMenu} />
-        </div>
-        <Sheet open={openMenu} onOpenChange={setOpenMenu}>
-          <SheetTrigger asChild>
-            <Button variant="outline" size="icon" className="lg:hidden">
-              <AlignJustify className="h-6 w-6" />
-              <span className="sr-only">Toggle Menu</span>
-            </Button>
-          </SheetTrigger>
-          <SheetContent side="left" className="w-full max-w-xs">
-            <ShopMenu setOpenMenu={setOpenMenu} />
+        <div className="flex items-center gap-4">
+          <Sheet open={openCartSheet} onOpenChange={setOpenCartSheet}>
+            <SheetTrigger asChild>
+              <Button variant="outline" size="icon" className="relative">
+                <ShoppingCart className="w-6 h-6" />
+                <span className="absolute top-[0px] right-[4px] font-bold text-xs">
+                  {cart?.items?.length || 0}
+                </span>
+                <span className="sr-only">User cart</span>
+              </Button>
+            </SheetTrigger>
+            <UserCartWrapper
+              setOpenCartSheet={setOpenCartSheet}
+              cartItems={
+                cart && cart?.items && cart?.items.length > 0 ? cart?.items : []
+              }
+            />
+          </Sheet>
+          <div className="hidden lg:block">
             <ShopDropdown setOpenMenu={setOpenMenu} />
-          </SheetContent>
-        </Sheet>
+          </div>
+          <Sheet open={openMenu} onOpenChange={setOpenMenu}>
+            <SheetTrigger asChild>
+              <Button variant="outline" size="icon" className="lg:hidden">
+                <AlignJustify className="h-6 w-6" />
+                <span className="sr-only">Toggle Menu</span>
+              </Button>
+            </SheetTrigger>
+            <SheetContent side="left" className="w-full max-w-xs">
+              <ShopMenu setOpenMenu={setOpenMenu} />
+              <ShopDropdown setOpenMenu={setOpenMenu} />
+            </SheetContent>
+          </Sheet>
+        </div>
       </div>
     </header>
   );

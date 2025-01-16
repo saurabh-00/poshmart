@@ -3,7 +3,11 @@ import { Badge } from "../ui/badge";
 import { Card, CardContent, CardFooter } from "../ui/card";
 import { Button } from "../ui/button";
 
-const ShoppingProductTile = ({ product, handleProductClick }) => {
+const ShoppingProductTile = ({
+  product,
+  handleProductClick,
+  handleAddToCart,
+}) => {
   return (
     <Card className="w-full max-w-sm mx-auto cursor-pointer">
       <div onClick={() => handleProductClick(product?._id)}>
@@ -59,7 +63,12 @@ const ShoppingProductTile = ({ product, handleProductClick }) => {
             Out Of Stock
           </Button>
         ) : (
-          <Button className="w-full">Add to cart</Button>
+          <Button
+            className="w-full"
+            onClick={() => handleAddToCart(product?._id, product?.totalStock)}
+          >
+            Add to cart
+          </Button>
         )}
       </CardFooter>
     </Card>

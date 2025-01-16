@@ -42,7 +42,6 @@ const shopCartSlice = createSlice({
             })
             .addCase(addToCart.rejected, (state, action) => {
                 state.isLoading = false;
-                state.cart = null;
             })
             .addCase(fetchCart.pending, (state) => {
                 state.isLoading = true;
@@ -53,7 +52,6 @@ const shopCartSlice = createSlice({
             })
             .addCase(fetchCart.rejected, (state, action) => {
                 state.isLoading = false;
-                state.cart = null;
             })
             .addCase(updateCart.pending, (state) => {
                 state.isLoading = true;
@@ -64,7 +62,6 @@ const shopCartSlice = createSlice({
             })
             .addCase(updateCart.rejected, (state, action) => {
                 state.isLoading = false;
-                state.cart = null;
             })
             .addCase(removeFromCart.pending, (state) => {
                 state.isLoading = true;
@@ -75,7 +72,6 @@ const shopCartSlice = createSlice({
             })
             .addCase(removeFromCart.rejected, (state, action) => {
                 state.isLoading = false;
-                state.cart = null;
             })
     }
 });

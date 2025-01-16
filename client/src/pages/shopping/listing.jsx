@@ -10,6 +10,8 @@ import {
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 import { sortOptions } from "@/config";
+import { useToast } from "@/hooks/use-toast";
+import { addToCart } from "@/store/shop/cart-slice";
 import {
   fetchAllFilteredProducts,
   fetchProductDetails,
@@ -41,6 +43,8 @@ const ShoppingListing = () => {
   const { products, productDetails } = useSelector(
     (state) => state.shopProducts
   );
+  const { cart } = useSelector((state) => state.shopCart);
+  const { toast } = useToast();
 
   const handleSort = (value) => {
     setSort(value);
@@ -92,6 +96,42 @@ const ShoppingListing = () => {
 
   const handleProductClick = (productId) => {
     dispatch(fetchProductDetails(productId));
+  };
+
+  const handleAddToCart = (productId, productStock) => {
+    let cartItems = cart?.items || [];
+    if (cartItems.length) {
+      const itemIndex = cartItems.findIndex(
+        (el) => el?.productId === productId
+      );
+      if (itemIndex !== -1) {
+        const cartItemQuantity = cartItems[itemIndex].quantity;
+        if (cartItemQuantity + 1 > productStock) {
+          toast({
+            title: `Only ${cartItemQuantity} items can be added for this product`,
+            variant: "destructive",
+          });
+          return;
+        }
+      }
+    }
+
+    dispatch(addToCart({ productId: productId, quantity: 1 }))
+      .then((data) => {
+        if (data?.payload?.success) {
+          toast({
+            title: data?.payload?.message,
+          });
+        } else {
+          throw new Error("Failed to add product to cart");
+        }
+      })
+      .catch((e) => {
+        toast({
+          title: e?.response?.data?.message || "Failed to add product to cart",
+          variant: "destructive",
+        });
+      });
   };
 
   useEffect(() => {
@@ -157,6 +197,7 @@ const ShoppingListing = () => {
                 key={productItem?._id}
                 product={productItem}
                 handleProductClick={handleProductClick}
+                handleAddToCart={handleAddToCart}
               />
             ))}
         </div>
@@ -165,6 +206,7 @@ const ShoppingListing = () => {
         open={openProductDetailsDialog}
         setOpen={setOpenProductDetailsDialog}
         productDetails={productDetails}
+        handleAddToCart={handleAddToCart}
       />
     </div>
   );

@@ -5,14 +5,14 @@ import { Separator } from "../ui/separator";
 import { setProductDetails } from "@/store/shop/products-slice";
 import { useDispatch } from "react-redux";
 
-const ProductDetails = ({ open, setOpen, productDetails }) => {
+const ProductDetails = ({ open, setOpen, productDetails, handleAddToCart }) => {
   const dispatch = useDispatch();
 
   const handleDialogClose = () => {
     setOpen(false);
     dispatch(setProductDetails());
   };
-  
+
   return (
     <Dialog open={open} onOpenChange={handleDialogClose}>
       <DialogContent className="grid grid-cols-1 gap-8 md:grid-cols-2 sm:p-12 max-w-[90vw] sm:max-w-[80vw] lg:max-w-[70vw]">
@@ -63,7 +63,17 @@ const ProductDetails = ({ open, setOpen, productDetails }) => {
                 Out of Stock
               </Button>
             ) : (
-              <Button className="w-full">Add to Cart</Button>
+              <Button
+                className="w-full"
+                onClick={() =>
+                  handleAddToCart(
+                    productDetails?._id,
+                    productDetails?.totalStock
+                  )
+                }
+              >
+                Add to Cart
+              </Button>
             )}
           </div>
           <Separator />
