@@ -44,10 +44,28 @@ const addToCart = async (req, res) => {
         }
 
         await cart.save();
+
+        await cart.populate({
+            path: 'items.product',
+            select: 'image title price salePrice'
+        });
+
+        const productItems = cart.items.map(item => ({
+            productId: item.product ? item.product._id.toString() : null,
+            image: item.product ? item.product.image : null,
+            title: item.product ? item.product.title : "Product not found",
+            price: item.product ? item.product.price : null,
+            salePrice: item.product ? item.product.salePrice : null,
+            quantity: item.quantity
+        }));
+
         return res.status(200).json({
             success: true,
             message: "Added product to cart",
-            cart
+            cart: {
+                ...cart._doc,
+                items: productItems
+            }
         });
     } catch (e) {
         console.log(e);
