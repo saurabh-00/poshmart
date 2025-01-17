@@ -32,7 +32,7 @@ const ShopMenu = ({ setOpenMenu }) => {
     <nav className="flex flex-col gap-6 mb-3 lg:mb-0 lg:items-center lg:flex-row">
       {shoppingViewHeaderMenuItems.map((menuItem) => (
         <Label
-          key={menuItem.id}
+          key={`${menuItem.id}_menu`}
           className="text-sm font-medium cursor-pointer"
           onClick={() => {
             navigate(menuItem.path);

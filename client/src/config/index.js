@@ -1,4 +1,4 @@
-import { LayoutDashboard, ShoppingBag, ShoppingBasket } from "lucide-react";
+import { Baby, Cat, Check, Footprints, Heading, LayoutDashboard, LoaderPinwheel, Merge, PersonStanding, Shirt, ShoppingBag, ShoppingBasket, SpellCheck, Watch, Zap } from "lucide-react";
 
 export const registerFormControls = [
     {
@@ -165,19 +165,19 @@ export const brandOptionsMap = {
 
 export const filterOptions = {
     category: [
-        { id: "men", label: "Men" },
-        { id: "women", label: "Women" },
-        { id: "kids", label: "Kids" },
-        { id: "accessories", label: "Accessories" },
-        { id: "footwear", label: "Footwear" },
+        { id: "men", label: "Men", icon: PersonStanding },
+        { id: "women", label: "Women", icon: Merge },
+        { id: "kids", label: "Kids", icon: Baby },
+        { id: "accessories", label: "Accessories", icon: Watch },
+        { id: "footwear", label: "Footwear", icon: Footprints },
     ],
     brand: [
-        { id: "nike", label: "Nike" },
-        { id: "adidas", label: "Adidas" },
-        { id: "puma", label: "Puma" },
-        { id: "levi", label: "Levi's" },
-        { id: "zara", label: "Zara" },
-        { id: "h&m", label: "H&M" },
+        { id: "nike", label: "Nike", icon: Check },
+        { id: "adidas", label: "Adidas", icon: SpellCheck },
+        { id: "puma", label: "Puma", icon: Cat },
+        { id: "levi", label: "Levi's", icon: LoaderPinwheel },
+        { id: "zara", label: "Zara", icon: Zap },
+        { id: "h&m", label: "H&M", icon: Heading },
     ],
 };
 
