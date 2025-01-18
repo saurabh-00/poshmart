@@ -1,10 +1,4 @@
-import {
-  AlignJustify,
-  House,
-  LogOut,
-  ShoppingCart,
-  UserRoundCog,
-} from "lucide-react";
+import { AlignJustify, LogOut, ShoppingCart, UserRoundCog } from "lucide-react";
 import { Sheet, SheetContent, SheetTrigger } from "../ui/sheet";
 import { Button } from "../ui/button";
 import { shoppingViewHeaderMenuItems } from "@/config";
@@ -29,6 +23,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { logoutUser } from "@/store/auth-slice";
 import { fetchCart } from "@/store/shop/cart-slice";
 import UserCartWrapper from "./cart-wrapper";
+import logo from "../../assets/vite.svg";
 
 const ShopMenu = ({ setOpenMenu }) => {
   const [searchParams, setSearchParams] = useSearchParams();
@@ -125,7 +120,7 @@ const ShoppingHeader = () => {
     <header className="sticky top-0 z-50 w-full border-b bg-background">
       <div className="flex h-16 items-center justify-between px-4 md:px-6">
         <Link to="/shop/home" className="flex items-center gap-2">
-          <House className="h-6 w-6" />
+          <img src={logo} alt="logo" className="w-8 h-8" />
           <span className="text-2xl font-bold">PoshMart</span>
         </Link>
         <div className="hidden lg:block">
