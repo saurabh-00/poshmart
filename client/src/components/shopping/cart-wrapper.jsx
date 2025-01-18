@@ -17,7 +17,7 @@ const UserCartWrapper = ({ cartItems, setOpenCartSheet }) => {
       : 0;
 
   return (
-    <SheetContent className="w-full max-w-xs">
+    <SheetContent className="w-full">
       <SheetHeader>
         <SheetTitle>
           <h1 className="text-xl font-bold">Your Cart</h1>

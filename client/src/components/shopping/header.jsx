@@ -159,7 +159,7 @@ const ShoppingHeader = () => {
                 <span className="sr-only">Toggle Menu</span>
               </Button>
             </SheetTrigger>
-            <SheetContent side="left" className="w-full max-w-xs">
+            <SheetContent side="left" className="w-full">
               <ShopMenu setOpenMenu={setOpenMenu} />
               <ShopDropdown setOpenMenu={setOpenMenu} />
             </SheetContent>
