@@ -9,7 +9,12 @@ import { Sheet, SheetContent, SheetTrigger } from "../ui/sheet";
 import { Button } from "../ui/button";
 import { shoppingViewHeaderMenuItems } from "@/config";
 import { Label } from "../ui/label";
-import { Link, useNavigate } from "react-router-dom";
+import {
+  Link,
+  useLocation,
+  useNavigate,
+  useSearchParams,
+} from "react-router-dom";
 import { useEffect, useState } from "react";
 import {
   DropdownMenu,
@@ -26,7 +31,28 @@ import { fetchCart } from "@/store/shop/cart-slice";
 import UserCartWrapper from "./cart-wrapper";
 
 const ShopMenu = ({ setOpenMenu }) => {
+  const [searchParams, setSearchParams] = useSearchParams();
   const navigate = useNavigate();
+  const location = useLocation();
+
+  const handleNavigate = (menuItem) => {
+    sessionStorage.removeItem("filters");
+    const filters =
+      menuItem.id !== "home" &&
+      menuItem.id !== "products" &&
+      menuItem.id !== "search"
+        ? { category: [menuItem.id] }
+        : null;
+    sessionStorage.setItem("filters", JSON.stringify(filters || {}));
+    if (location.pathname.includes("listing") && filters !== null) {
+      setSearchParams(
+        new URLSearchParams(`category=${encodeURIComponent(menuItem.id)}`)
+      );
+    } else {
+      navigate(menuItem.path);
+    }
+    setOpenMenu(false);
+  };
 
   return (
     <nav className="flex flex-col gap-6 mb-3 lg:mb-0 lg:items-center lg:flex-row">
@@ -34,10 +60,7 @@ const ShopMenu = ({ setOpenMenu }) => {
         <Label
           key={`${menuItem.id}_menu`}
           className="text-sm font-medium cursor-pointer"
-          onClick={() => {
-            navigate(menuItem.path);
-            setOpenMenu(false);
-          }}
+          onClick={() => handleNavigate(menuItem)}
         >
           {menuItem.label}
         </Label>

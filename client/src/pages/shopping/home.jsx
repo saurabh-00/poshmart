@@ -22,7 +22,7 @@ const ShoppingHome = () => {
   const handleNavigateToListingPage = (filterItem, filterOption) => {
     sessionStorage.removeItem("filters");
     const currentFilter = {
-      [filterOption]: filterItem.id,
+      [filterOption]: [filterItem.id],
     };
     sessionStorage.setItem("filters", JSON.stringify(currentFilter));
     navigate("/shop/listing");

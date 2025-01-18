@@ -21,7 +21,7 @@ import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useSearchParams } from "react-router-dom";
 
-const createSearchParamsString = (filters) => {
+const createSearchParamsString = (filters = {}) => {
   let queryParams = [];
   for (const [key, value] of Object.entries(filters)) {
     if (Array.isArray(value) && value.length > 0) {
@@ -133,6 +133,10 @@ const ShoppingListing = () => {
         });
       });
   };
+
+  useEffect(() => {
+    setFilters(JSON.parse(sessionStorage.getItem("filters")) || {});
+  }, [searchParams]);
 
   useEffect(() => {
     const queryString = createSearchParamsString(filters);
