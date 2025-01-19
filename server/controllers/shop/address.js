@@ -46,7 +46,7 @@ const getAllAddress = async (req, res) => {
     try {
         const { id: userId } = req.user;
 
-        const addresses = await Address.find({ user: userId }).sort({ isDefault: -1, createdAt: -1 });
+        const addresses = await Address.find({ user: userId }).sort({ createdAt: -1 });
 
         return res.status(200).json({
             success: true,

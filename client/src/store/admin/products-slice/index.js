@@ -41,7 +41,6 @@ const adminProductsSlice = createSlice({
                 state.isLoading = false;
             })
             .addCase(fetchProducts.rejected, (state, action) => {
-                state.products = [];
                 state.isLoading = false;
             })
             .addCase(addProduct.pending, (state) => {
