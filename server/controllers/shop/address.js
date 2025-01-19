@@ -5,7 +5,7 @@ const addAddress = async (req, res) => {
         const { id: userId } = req.user;
         const { address, city, pincode, phone, notes } = req.body;
 
-        if (!userId || !address || !city || !pincode || !phone || !notes) {
+        if (!userId || !address || !city || !pincode || !phone) {
             return res.status(400).json({
                 success: false,
                 message: "Invalid data",
@@ -114,7 +114,7 @@ const deleteAddress = async (req, res) => {
 
         return res.status(200).json({
             success: true,
-            message: "Address updated successfully",
+            message: "Address deleted successfully",
             address: deletedAddress
         });
     } catch (e) {
@@ -146,7 +146,7 @@ const setDefaultAddress = async (req, res) => {
 
         return res.status(200).json({
             success: true,
-            message: "Address updated successfully",
+            message: "Default Address set successfully",
             address: updatedAddress
         });
     } catch (e) {

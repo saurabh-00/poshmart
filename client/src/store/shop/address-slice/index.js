@@ -86,4 +86,4 @@ const shopAddressSlice = createSlice({
     }
 });
 
-export default shopCartSlice.reducer;
+export default shopAddressSlice.reducer;

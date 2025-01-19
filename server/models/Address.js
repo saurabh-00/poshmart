@@ -23,8 +23,7 @@ const AddressSchema = new mongoose.Schema({
         required: true
     },
     notes: {
-        type: String,
-        required: true
+        type: String
     },
     isDefault: {
         type: Boolean,
