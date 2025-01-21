@@ -86,7 +86,7 @@ const App = () => {
           <Route path="account" element={<ShoppingAccount />} />
           <Route path="checkout" element={<ShoppingCheckout />} />
           <Route path="payment-success" element={<PaymentSuccess />} />
-          <Route path="payment-return" element={<PaypalReturn />} />
+          <Route path="paypal-return" element={<PaypalReturn />} />
           <Route path="search" element={<SearchProducts />} />
         </Route>
 

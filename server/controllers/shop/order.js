@@ -11,14 +11,9 @@ const createOrder = async (req, res) => {
         const {
             cartItems,
             addressId,
-            orderStatus,
-            paymentMethod,
-            paymentStatus,
             totalAmount,
             orderDate,
-            orderUpdateDate,
-            paymentId,
-            payerId
+            orderUpdateDate
         } = req.body;
 
         const create_payment_json = {
@@ -62,14 +57,9 @@ const createOrder = async (req, res) => {
                     user: userId,
                     items: cartItems.map(item => ({ product: item.productId, quantity: item.quantity, price: item.price })),
                     address: addressId,
-                    orderStatus,
-                    paymentMethod,
-                    paymentStatus,
                     totalAmount,
                     orderDate,
-                    orderUpdateDate,
-                    paymentId,
-                    payerId
+                    orderUpdateDate
                 });
 
                 await newOrder.save();
@@ -80,8 +70,9 @@ const createOrder = async (req, res) => {
 
                 return res.status(201).json({
                     success: true,
+                    message: "Your order has been created",
                     approvalURL,
-                    orderId: newOrder._id.toString(),
+                    orderId: newOrder._id.toString()
                 });
             }
         });
@@ -94,4 +85,94 @@ const createOrder = async (req, res) => {
     }
 }
 
-module.exports = { createOrder };
+const capturePayment = async (req, res) => {
+    try {
+        const { id: userId } = req.user;
+        const { paymentId, payerId, orderId } = req.body;
+
+        const order = await Order.findOneAndUpdate({ _id: orderId, user: userId },
+            { paymentId, payerId, paymentStatus: "paid", orderStatus: "confirmed" },
+            { new: true });
+
+        if (!order) {
+            return res.status(404).json({
+                success: false,
+                message: "Order not found"
+            });
+        }
+
+        for (let item of order.items) {
+            const product = await Product.findById(item.product?.toString());
+            if (product) {
+                await Product.findByIdAndUpdate(item.product?.toString(),
+                    { totalStock: product.totalStock - item.quantity });
+            }
+        }
+
+        await Cart.findOneAndDelete({ user: userId });
+
+        return res.status(200).json({
+            success: true,
+            message: "Order confirmed",
+            order
+        });
+    } catch (e) {
+        console.log(e);
+        return res.status(500).json({
+            success: false,
+            message: e.message || "Something bad happened"
+        });
+    }
+}
+
+const getAllUserOrders = async (req, res) => {
+    try {
+        const { id: userId } = req.user;
+
+        const orders = await Order.find({ user: userId }).sort({ orderDate: -1 });
+
+        if (!orders.length) {
+            return res.status(404).json({
+                success: false,
+                message: "No orders found!"
+            });
+        }
+
+        return res.status(200).json({
+            success: true,
+            message: "Order fetched successfully",
+            orders
+        });
+    } catch (e) {
+        console.log(e);
+        return res.status(500).json({
+            success: false,
+            message: e.message || "Something bad happened"
+        });
+    }
+}
+
+const getOrderDetails = async (req, res) => {
+    try {
+        const { id: userId } = req.user;
+        const { id } = req.params;
+
+        const order = await Order.findOne({ _id: id, user: userId }).populate({
+            path: 'items.product'
+        }).populate('address');
+
+        return res.status(200).json({
+            success: true,
+            message: "Order confirmed",
+            data: order
+        });
+    } catch (e) {
+        console.log(e);
+        return res.status(500).json({
+            success: false,
+            message: e.message || "Something bad happened"
+        });
+    }
+}
+
+module.exports = { createOrder, capturePayment, getAllUserOrders, getOrderDetails };

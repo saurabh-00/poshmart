@@ -20,7 +20,7 @@ const initialAddressFormData = {
   notes: "",
 };
 
-const Address = () => {
+const Address = ({ selectedAddress, setSelectedAddress }) => {
   const [formData, setFormData] = useState(initialAddressFormData);
   const [currentEditedId, setCurrentEditedId] = useState(null);
   const dispatch = useDispatch();
@@ -131,8 +131,8 @@ const Address = () => {
   };
 
   return (
-    <Card>
-      <div className="mb-5 p-3 grid grid-cols-1 md:grid-cols-3 gap-2">
+    <Card className="flex-grow">
+      <div className="mb-5 p-3 grid grid-cols-1 lg:grid-cols-3 gap-2">
         {!!addresses.length &&
           addresses.map((address) => (
             <AddressCard
@@ -140,6 +140,8 @@ const Address = () => {
               addressInfo={address}
               handleEditAddress={handleEditAddress}
               handleDeleteAddress={handleDeleteAddress}
+              selectedAddress={selectedAddress}
+              setSelectedAddress={setSelectedAddress}
             />
           ))}
       </div>

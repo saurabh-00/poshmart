@@ -32,7 +32,10 @@ const OrderSchema = new mongoose.Schema({
         type: Number,
         required: true
     },
-    orderStatus: String,
+    orderStatus: {
+        type: String,
+        default: 'pending'
+    },
     orderDate: {
         type: Date,
         default: Date.now
@@ -40,10 +43,22 @@ const OrderSchema = new mongoose.Schema({
     orderUpdateDate: {
         type: Date
     },
-    paymentMethod: String,
-    paymentStatus: String,
-    paymentId: String,
-    payerId: String,
+    paymentMethod: {
+        type: String,
+        default: 'paypal'
+    },
+    paymentStatus: {
+        type: String,
+        default: 'pending'
+    },
+    paymentId: {
+        type: String,
+        default: ''
+    },
+    payerId: {
+        type: String,
+        default: ''
+    }
 });
 
 const Order = mongoose.model('Order', OrderSchema);

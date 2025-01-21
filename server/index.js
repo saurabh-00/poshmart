@@ -29,7 +29,7 @@ app.use('/admin/products', adminProductsRouter);
 app.use('/shop/products', shopProductsRouter);
 app.use('/shop/cart', shopCartRouter);
 app.use('/shop/address', shopAddressRouter);
-app.use('/shop/order', shopOrderRouter);
+app.use('/shop/orders', shopOrderRouter);
 
 /* MONGOOSE SETUP */
 const PORT = process.env.PORT || 5000;
