@@ -11,7 +11,6 @@ const initialState = {
 }
 
 export const createNewOrder = createAsyncThunk('orders/create', async (orderData) => {
-    console.log(orderData)
     const response = await axios.post(`${apiUrl}/shop/orders/create`, orderData, { withCredentials: true });
     return response.data;
 });
