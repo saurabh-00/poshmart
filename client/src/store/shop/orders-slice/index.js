@@ -20,6 +20,16 @@ export const capturePayment = createAsyncThunk('orders/capture', async (paymentD
     return response.data;
 });
 
+export const getAllUserOrders = createAsyncThunk('orders/userOrders', async () => {
+    const response = await axios.get(`${apiUrl}/shop/orders`, { withCredentials: true });
+    return response.data;
+});
+
+export const getOrderDetails = createAsyncThunk('orders/orderDetails', async (id) => {
+    const response = await axios.get(`${apiUrl}/shop/orders/${id}`, { withCredentials: true });
+    return response.data;
+});
+
 const shopOrdersSlice = createSlice({
     name: 'shopOrders',
     initialState,
@@ -42,6 +52,28 @@ const shopOrdersSlice = createSlice({
                 state.isLoading = false;
                 state.approvalURL = null;
                 state.orderId = null;
+            })
+            .addCase(getAllUserOrders.pending, (state) => {
+                state.isLoading = true;
+            })
+            .addCase(getAllUserOrders.fulfilled, (state, action) => {
+                state.isLoading = false;
+                state.orders = action.payload.success ? action.payload.orders : [];
+            })
+            .addCase(getAllUserOrders.rejected, (state, action) => {
+                state.isLoading = false;
+                state.orders = [];
+            })
+            .addCase(getOrderDetails.pending, (state) => {
+                state.isLoading = true;
+            })
+            .addCase(getOrderDetails.fulfilled, (state, action) => {
+                state.isLoading = false;
+                state.orderDetails = action.payload.success ? action.payload.data : null;
+            })
+            .addCase(getOrderDetails.rejected, (state, action) => {
+                state.isLoading = false;
+                state.orderDetails = null;
             })
     }
 });
