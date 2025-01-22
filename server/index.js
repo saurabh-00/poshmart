@@ -5,6 +5,7 @@ const mongoose = require('mongoose');
 const dotenv = require('dotenv');
 const authRouter = require('./routes/auth/auth');
 const adminProductsRouter = require('./routes/admin/products');
+const adminOrdersRouter = require('./routes/admin/orders');
 const shopProductsRouter = require('./routes/shop/products');
 const shopCartRouter = require('./routes/shop/cart');
 const shopAddressRouter = require('./routes/shop/address');
@@ -26,6 +27,7 @@ app.use(cookieParser());
 /* ROUTES */
 app.use('/auth', authRouter);
 app.use('/admin/products', adminProductsRouter);
+app.use('/admin/orders', adminOrdersRouter);
 app.use('/shop/products', shopProductsRouter);
 app.use('/shop/cart', shopCartRouter);
 app.use('/shop/address', shopAddressRouter);

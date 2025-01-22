@@ -140,7 +140,7 @@ const getAllUserOrders = async (req, res) => {
 
         return res.status(200).json({
             success: true,
-            message: "Order fetched successfully",
+            message: "Orders fetched successfully",
             orders
         });
     } catch (e) {
@@ -161,9 +161,16 @@ const getOrderDetails = async (req, res) => {
             path: 'items.product'
         }).populate('address');
 
+        if (!order) {
+            return res.status(404).json({
+                success: false,
+                message: "Order not found"
+            });
+        }
+
         return res.status(200).json({
             success: true,
-            message: "Order confirmed",
+            message: "Order details fetched successfully",
             data: order
         });
     } catch (e) {
