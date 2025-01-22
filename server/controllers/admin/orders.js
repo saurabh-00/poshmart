@@ -31,6 +31,9 @@ const getOrderDetailsAdmin = async (req, res) => {
 
         const order = await Order.findById(id).populate({
             path: 'items.product'
+        }).populate({
+            path: 'user',
+            select: 'username email'
         }).populate('address');
 
         if (!order) {
@@ -62,7 +65,12 @@ const updateOrderStatus = async (req, res) => {
         const order = await Order.findByIdAndUpdate(id,
             { orderStatus },
             { new: true }
-        );
+        ).populate({
+            path: 'items.product'
+        }).populate({
+            path: 'user',
+            select: 'username email'
+        }).populate('address');
 
         if (!order) {
             return res.status(404).json({

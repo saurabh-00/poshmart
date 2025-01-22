@@ -5,7 +5,7 @@ import { DialogContent } from "../ui/dialog";
 
 const ShoppingOrderDetailsView = ({ orderDetails }) => {
   return (
-    <DialogContent className="sm:max-w-[600px]">
+    <DialogContent className="sm:max-w-[600px] overflow-y-scroll max-h-screen">
       <div className="grid gap-6">
         <div className="grid gap-2">
           <div className="flex mt-6 items-center justify-between">
@@ -35,7 +35,7 @@ const ShoppingOrderDetailsView = ({ orderDetails }) => {
                 className={`py-1 px-3 capitalize ${
                   orderDetails?.orderStatus === "confirmed"
                     ? "bg-green-500"
-                    : orderDetails?.orderStatus === "rejected"
+                    : orderDetails?.orderStatus === "cancelled"
                     ? "bg-red-600"
                     : "bg-black"
                 }`}

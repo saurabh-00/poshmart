@@ -15,7 +15,7 @@ const ProductDetails = ({ open, setOpen, productDetails, handleAddToCart }) => {
 
   return (
     <Dialog open={open} onOpenChange={handleDialogClose}>
-      <DialogContent className="grid grid-cols-1 gap-8 md:grid-cols-2 sm:p-12 max-w-[90vw] sm:max-w-[80vw] lg:max-w-[70vw]">
+      <DialogContent className="grid grid-cols-1 gap-8 md:grid-cols-2 sm:p-12 max-w-[90vw] sm:max-w-[80vw] lg:max-w-[70vw] overflow-y-scroll max-h-screen">
         <div className="relative overflow-hidden rounded-lg">
           <img
             src={productDetails?.image}

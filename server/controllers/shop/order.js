@@ -2,7 +2,6 @@ const paypal = require("../../helpers/paypal");
 const Order = require("../../models/Order");
 const Cart = require("../../models/Cart");
 const Product = require("../../models/Product");
-const Address = require("../../models/Address");
 require("dotenv").config();
 
 const createOrder = async (req, res) => {

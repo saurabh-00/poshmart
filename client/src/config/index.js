@@ -246,4 +246,20 @@ export const adminSidebarMenuItems = [
     },
 ];
 
+export const updateOrderStatusFormControls = [
+    {
+        label: "Order Status",
+        name: "status",
+        componentType: "select",
+        options: [
+            { id: "pending", label: "Pending" },
+            { id: "confirmed", label: "Confirmed" },
+            { id: "processing", label: "Processing" },
+            { id: "shipped", label: "Shipped" },
+            { id: "delivered", label: "Delivered" },
+            { id: "cancelled", label: "Cancelled" },
+        ],
+    },
+]
+
 export const apiUrl = `http://localhost:5000`;

@@ -67,7 +67,7 @@ const ShoppingOrders = () => {
                         className={`py-1 px-3 capitalize ${
                           order?.orderStatus === "confirmed"
                             ? "bg-green-500"
-                            : order?.orderStatus === "rejected"
+                            : order?.orderStatus === "cancelled"
                             ? "bg-red-500"
                             : "bg-black"
                         }`}

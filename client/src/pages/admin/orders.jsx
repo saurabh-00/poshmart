@@ -1,5 +1,11 @@
+import AdminOrdersView from "@/components/admin/orders";
+
 const AdminOrders = () => {
-  return <div>AdminOrders</div>;
+  return (
+    <>
+      <AdminOrdersView />
+    </>
+  );
 };
 
 export default AdminOrders;
