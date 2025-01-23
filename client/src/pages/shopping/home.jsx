@@ -1,13 +1,16 @@
 import ProductDetails from "@/components/shopping/product-details";
 import ShoppingProductTile from "@/components/shopping/product-tile";
+import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 import { filterOptions, sortOptions } from "@/config";
 import { useToast } from "@/hooks/use-toast";
+import { getFeatureImages } from "@/store/common-slice";
 import { addToCart } from "@/store/shop/cart-slice";
 import {
   fetchAllFilteredProducts,
   fetchProductDetails,
 } from "@/store/shop/products-slice";
+import { ChevronLeftIcon, ChevronRightIcon } from "lucide-react";
 import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
@@ -17,11 +20,13 @@ const categories = filterOptions.category;
 const brands = filterOptions.brand;
 
 const ShoppingHome = () => {
+  const [currentSlide, setCurrentSlide] = useState(0);
   const [openProductDetailsDialog, setOpenProductDetailsDialog] =
     useState(false);
   const { products, productDetails } = useSelector(
     (state) => state.shopProducts
   );
+  const { featureImageList } = useSelector((state) => state.commonFeatures);
   const { cart } = useSelector((state) => state.shopCart);
   const dispatch = useDispatch();
   const navigate = useNavigate();
@@ -77,6 +82,7 @@ const ShoppingHome = () => {
   };
 
   useEffect(() => {
+    dispatch(getFeatureImages());
     dispatch(
       fetchAllFilteredProducts({
         filterParams: {},
@@ -84,6 +90,13 @@ const ShoppingHome = () => {
       })
     );
   }, [dispatch]);
+
+  useEffect(() => {
+    const timer = setInterval(() => {
+      setCurrentSlide((prevSlide) => (prevSlide + 1) % featureImageList.length);
+    }, 5000);
+    return () => clearInterval(timer);
+  }, [featureImageList]);
 
   useEffect(() => {
     if (productDetails !== null) {
@@ -94,7 +107,44 @@ const ShoppingHome = () => {
   return (
     <div className="flex flex-col min-h-screen">
       <div className="relative w-full h-[600px] overflow-hidden">
-        {/* Feature Image */}
+        {featureImageList && featureImageList.length > 0
+          ? featureImageList.map((slide, index) => (
+              <img
+                src={slide?.image}
+                alt="featured"
+                key={slide?._id}
+                className={`${
+                  index === currentSlide ? "opacity-100" : "opacity-0"
+                } absolute top-0 left-0 w-full h-full object-cover transition-opacity duration-1000`}
+              />
+            ))
+          : null}
+        <Button
+          variant="outline"
+          size="icon"
+          onClick={() =>
+            setCurrentSlide(
+              (prevSlide) =>
+                (prevSlide - 1 + featureImageList.length) %
+                featureImageList.length
+            )
+          }
+          className="absolute top-1/2 left-4 transform -translate-y-1/2 bg-white/80"
+        >
+          <ChevronLeftIcon className="w-4 h-4" />
+        </Button>
+        <Button
+          variant="outline"
+          size="icon"
+          onClick={() =>
+            setCurrentSlide(
+              (prevSlide) => (prevSlide + 1) % featureImageList.length
+            )
+          }
+          className="absolute top-1/2 right-4 transform -translate-y-1/2 bg-white/80"
+        >
+          <ChevronRightIcon className="w-4 h-4" />
+        </Button>
       </div>
       <section className="py-12 bg-gray-50">
         <div className="container mx-auto px-4">
