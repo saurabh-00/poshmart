@@ -58,7 +58,7 @@ const getAllReviews = async (req, res) => {
     try {
         const { productId } = req.params;
 
-        const reviews = await Review.find({ product: productId });
+        const reviews = await Review.find({ product: productId }).sort({ createdAt: -1 });
 
         return res.status(201).json({
             success: true,
