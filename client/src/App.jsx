@@ -10,7 +10,6 @@ import AuthLogin from "./pages/auth/login";
 import AdminLayout from "./components/admin/layout";
 import AdminDashboard from "./pages/admin/dashboard";
 import AdminProducts from "./pages/admin/products";
-import AdminFeatures from "./pages/admin/features";
 import AdminOrders from "./pages/admin/orders";
 import ShoppingLayout from "./components/shopping/layout";
 import ShoppingHome from "./pages/shopping/home";
@@ -69,7 +68,6 @@ const App = () => {
         >
           <Route path="dashboard" element={<AdminDashboard />} />
           <Route path="products" element={<AdminProducts />} />
-          <Route path="features" element={<AdminFeatures />} />
           <Route path="orders" element={<AdminOrders />} />
         </Route>
 

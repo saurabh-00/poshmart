@@ -23,14 +23,15 @@ export const addFeatureImage = createAsyncThunk(
     async (image) => {
         const response = await axios.post(
             `${apiUrl}/common/features`,
-            { image }
+            { image },
+            { withCredentials: true }
         );
         return response.data;
     }
 );
 
-const commonSlice = createSlice({
-    name: "common",
+const commonFeaturesSlice = createSlice({
+    name: "commonFeatures",
     initialState,
     reducers: {},
     extraReducers: (builder) => {
@@ -44,7 +45,6 @@ const commonSlice = createSlice({
             })
             .addCase(getFeatureImages.rejected, (state) => {
                 state.isLoading = false;
-                state.featureImageList = [];
             })
             .addCase(addFeatureImage.pending, (state) => {
                 state.isLoading = true;
@@ -55,9 +55,8 @@ const commonSlice = createSlice({
             })
             .addCase(addFeatureImage.rejected, (state) => {
                 state.isLoading = false;
-                state.featureImageList = [];
             })
     }
 });
 
-export default commonSlice.reducer;
+export default commonFeaturesSlice.reducer;
