@@ -56,8 +56,8 @@ const commonSlice = createSlice({
             .addCase(addFeatureImage.rejected, (state) => {
                 state.isLoading = false;
                 state.featureImageList = [];
-            });
-    },
+            })
+    }
 });
 
 export default commonSlice.reducer;
