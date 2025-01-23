@@ -20,13 +20,18 @@ export const getAllReviews = createAsyncThunk(
 
 export const addReview = createAsyncThunk(
     "reviews/addReview",
-    async ({ productId, formData }) => {
-        const response = await axios.post(
-            `${apiUrl}/shop/reviews/${productId}`,
-            formData,
-            { withCredentials: true }
-        );
-        return response.data;
+    async ({ productId, formData }, { rejectWithValue }) => {
+        try {
+            const response = await axios.post(
+                `${apiUrl}/shop/reviews/${productId}`,
+                formData,
+                { withCredentials: true }
+            );
+            return response.data;
+        } catch (e) {
+            return rejectWithValue(e?.response?.data || e?.message)
+        }
+
     }
 );
 
@@ -49,7 +54,6 @@ const shopReviewsSlice = createSlice({
             })
             .addCase(getAllReviews.rejected, (state) => {
                 state.isLoading = false;
-                state.reviews = [];
             })
             .addCase(addReview.pending, (state) => {
                 state.isLoading = true;

@@ -32,6 +32,11 @@ const addReview = async (req, res) => {
         });
         await newReview.save();
 
+        await newReview.populate({
+            path: 'user',
+            select: 'username'
+        });
+
         const reviews = await Review.find({ product: productId });
         const totalReview = reviews.length;
         const averageReview = reviews.reduce((sum, currentReview) => sum + currentReview.rating, 0) / totalReview;
@@ -58,7 +63,10 @@ const getAllReviews = async (req, res) => {
     try {
         const { productId } = req.params;
 
-        const reviews = await Review.find({ product: productId }).sort({ createdAt: -1 });
+        const reviews = await Review.find({ product: productId }).sort({ createdAt: -1 }).populate({
+            path: 'user',
+            select: 'username'
+        });
 
         return res.status(201).json({
             success: true,

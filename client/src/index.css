@@ -64,3 +64,19 @@
     @apply bg-background text-foreground;
   }
 }
+
+svg.star-svg {
+  display: inline;
+}
+
+::-webkit-scrollbar {
+  @apply w-2.5 h-2.5;
+}
+
+::-webkit-scrollbar-track {
+  @apply bg-transparent;
+}
+
+::-webkit-scrollbar-thumb {
+  @apply rounded-sm bg-border border-[1px] border-transparent border-solid bg-clip-padding;
+}

@@ -5,7 +5,7 @@ import { DialogContent } from "../ui/dialog";
 
 const ShoppingOrderDetailsView = ({ orderDetails }) => {
   return (
-    <DialogContent className="sm:max-w-[600px] overflow-y-scroll max-h-screen">
+    <DialogContent className="sm:max-w-[600px] overflow-y-auto max-h-screen">
       <div className="grid gap-6">
         <div className="grid gap-2">
           <div className="flex mt-6 items-center justify-between">
