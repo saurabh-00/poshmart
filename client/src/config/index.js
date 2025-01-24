@@ -262,4 +262,4 @@ export const updateOrderStatusFormControls = [
     },
 ]
 
-export const apiUrl = `http://localhost:5000`;
+export const apiUrl = `https://poshmart-server.onrender.com`;
