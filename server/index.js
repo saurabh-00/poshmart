@@ -12,6 +12,7 @@ const shopCartRouter = require('./routes/shop/cart');
 const shopAddressRouter = require('./routes/shop/address');
 const shopOrderRouter = require('./routes/shop/order');
 const shopReviewsRouter = require('./routes/shop/review');
+const shopSearchRouter = require('./routes/shop/search');
 
 dotenv.config();
 
@@ -36,6 +37,7 @@ app.use('/shop/cart', shopCartRouter);
 app.use('/shop/address', shopAddressRouter);
 app.use('/shop/orders', shopOrderRouter);
 app.use('/shop/reviews', shopReviewsRouter);
+app.use('/shop/search', shopSearchRouter);
 
 /* MONGOOSE SETUP */
 const PORT = process.env.PORT || 5000;
