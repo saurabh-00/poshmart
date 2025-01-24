@@ -28,14 +28,14 @@ const shopSearchSlice = createSlice({
     },
     extraReducers: (builder) => {
         builder
-            .addCase(getFeatureImages.pending, (state) => {
+            .addCase(getSearchResults.pending, (state) => {
                 state.isLoading = true;
             })
-            .addCase(getFeatureImages.fulfilled, (state, action) => {
+            .addCase(getSearchResults.fulfilled, (state, action) => {
                 state.isLoading = false;
                 state.searchResults = action.payload.data;
             })
-            .addCase(getFeatureImages.rejected, (state) => {
+            .addCase(getSearchResults.rejected, (state) => {
                 state.isLoading = false;
                 state.searchResults = [];
             })
