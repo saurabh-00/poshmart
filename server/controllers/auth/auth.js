@@ -1,6 +1,6 @@
+const { createJwt } = require("../../middleware/auth");
 const User = require("../../models/User");
 const bcrypt = require('bcryptjs');
-const jwt = require('jsonwebtoken');
 
 // Register 
 const registerUser = async (req, res) => {
@@ -56,12 +56,7 @@ const loginUser = async (req, res) => {
             });
         }
 
-        const token = jwt.sign({
-            id: user.id,
-            username: user.username,
-            email: user.email,
-            role: user.role
-        }, process.env.JWT_SECRET_KEY, { expiresIn: "7d" });
+        const token = createJwt(user)
 
         return res.cookie("token", token, {
             httpOnly: true,

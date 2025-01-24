@@ -1,4 +1,14 @@
 const jwt = require('jsonwebtoken');
+require('dotenv').config();
+
+const createJwt = (user) => {
+    return jwt.sign({
+        id: user.id,
+        username: user.username,
+        email: user.email,
+        role: user.role
+    }, process.env.JWT_SECRET_KEY, { expiresIn: "7d" });
+}
 
 const auth = async (req, res, next) => {
     try {
@@ -27,4 +37,18 @@ const auth = async (req, res, next) => {
     }
 }
 
-module.exports = auth;
+const withRole = (ArrayRoles) => (req, res, next) => {
+    const { user } = req
+    if (!user) {
+        return res.status(401).json({ error: 'Unauthorised user!' });
+    }
+    if (!user.role) {
+        return res.status(403).json({ error: 'Forbidden!' });
+    }
+    if (ArrayRoles.includes(user.role)) {
+        return next();
+    }
+    return res.status(403).json({ error: 'Forbidden user!' });
+};
+
+module.exports = { createJwt, auth, withRole };

@@ -1,6 +1,5 @@
 const paypal = require("paypal-rest-sdk");
-const dotenv = require("dotenv");
-dotenv.config();
+require("dotenv").config();
 
 paypal.configure({
     mode: "sandbox",

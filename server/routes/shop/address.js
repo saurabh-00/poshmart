@@ -1,5 +1,5 @@
 const express = require('express');
-const auth = require('../../middleware/auth');
+const { auth } = require('../../middleware/auth');
 const { addAddress, getAllAddress, updateAddress, deleteAddress, setDefaultAddress } = require("../../controllers/shop/address");
 
 const router = express();
