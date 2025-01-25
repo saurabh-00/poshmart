@@ -4,7 +4,7 @@ const { getAllFilteredProducts, getProductDetails } = require('../../controllers
 
 const router = express();
 
-router.get('/', getAllFilteredProducts);
-router.get('/:id', getProductDetails);
+router.get('/', auth, getAllFilteredProducts);
+router.get('/:id', auth, getProductDetails);
 
 module.exports = router;

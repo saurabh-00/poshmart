@@ -3,10 +3,10 @@ import { Input } from "../ui/input";
 import { Label } from "../ui/label";
 import { CloudUpload, FileImage, XIcon } from "lucide-react";
 import { Button } from "../ui/button";
-import axios from "axios";
 import { apiUrl } from "@/config";
 import { useToast } from "@/hooks/use-toast";
 import { Skeleton } from "../ui/skeleton";
+import httpClient from "@/config/interceptor";
 
 const ProductImageUpload = ({
   imageFile,
@@ -26,10 +26,9 @@ const ProductImageUpload = ({
       setImageLoadingState(true);
       const data = new FormData();
       data.append("image", imageFile);
-      const response = await axios.post(
-        `${apiUrl}/admin/products/upload-image`,
-        data,
-        { withCredentials: true }
+      const response = await httpClient.post(
+        `/admin/products/upload-image`,
+        data
       );
       if (response?.data?.success) {
         setUploadedImageUrl(response.data.url);

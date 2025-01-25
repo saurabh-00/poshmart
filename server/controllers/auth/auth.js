@@ -58,11 +58,21 @@ const loginUser = async (req, res) => {
 
         const token = createJwt(user)
 
-        return res.cookie("token", token, {
-            httpOnly: true,
-            secure: process.env.NODE_ENV === "PROD",
-            maxAge: 1000 * 60 * 60 * 24 * 7
-        }).json({
+        // return res.cookie("token", token, {
+        //     httpOnly: true,
+        //     secure: process.env.NODE_ENV === "PROD",
+        //     maxAge: 1000 * 60 * 60 * 24 * 7
+        // }).json({
+        //     success: true,
+        //     message: "Logged in successfully",
+        //     user: {
+        //         id: user.id,
+        //         username: user.username,
+        //         email: user.email,
+        //         role: user.role
+        //     }
+        // });
+        return res.json({
             success: true,
             message: "Logged in successfully",
             user: {
@@ -70,7 +80,8 @@ const loginUser = async (req, res) => {
                 username: user.username,
                 email: user.email,
                 role: user.role
-            }
+            },
+            token
         });
     } catch (e) {
         console.log(e);

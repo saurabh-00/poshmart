@@ -12,7 +12,13 @@ const createJwt = (user) => {
 
 const auth = async (req, res, next) => {
     try {
-        const token = req.cookies.token;
+        // const token = req.cookies.token;
+        let token = req.header("Authorization");
+
+        if (token.startsWith("Bearer ")) {
+            token = token.slice(7, token.length).trimLeft();
+        }
+        
         if (!token) {
             return res.status(401).json({
                 success: false,

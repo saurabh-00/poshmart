@@ -1,6 +1,6 @@
-import { apiUrl } from "@/config";
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
-import axios from "axios";
+import httpClient from "@/config/interceptor";
+import { logoutUser } from "@/store/auth-slice";
 
 const initialState = {
     isLoading: true,
@@ -8,22 +8,22 @@ const initialState = {
 }
 
 export const fetchProducts = createAsyncThunk('products/fetch', async () => {
-    const response = await axios.get(`${apiUrl}/admin/products`, { withCredentials: true });
+    const response = await httpClient.get(`/admin/products`);
     return response.data;
 });
 
 export const addProduct = createAsyncThunk('products/add', async (formData) => {
-    const response = await axios.post(`${apiUrl}/admin/products`, formData, { withCredentials: true });
+    const response = await httpClient.post(`/admin/products`, formData);
     return response.data;
 });
 
 export const updateProduct = createAsyncThunk('products/update', async ({ id, formData }) => {
-    const response = await axios.patch(`${apiUrl}/admin/products/${id}`, formData, { withCredentials: true });
+    const response = await httpClient.patch(`/admin/products/${id}`, formData);
     return response.data;
 });
 
 export const deleteProduct = createAsyncThunk('products/delete', async (id) => {
-    const response = await axios.delete(`${apiUrl}/admin/products/${id}`, { withCredentials: true });
+    const response = await httpClient.delete(`/admin/products/${id}`);
     return response.data;
 });
 
@@ -78,6 +78,7 @@ const adminProductsSlice = createSlice({
             .addCase(deleteProduct.rejected, (state, action) => {
                 state.isLoading = false;
             })
+              .addCase(logoutUser, () => initialState)
     })
 });
 

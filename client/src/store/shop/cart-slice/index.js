@@ -1,6 +1,6 @@
-import { apiUrl } from "@/config";
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
-import axios from "axios";
+import httpClient from "@/config/interceptor";
+import { logoutUser } from "@/store/auth-slice";
 
 const initialState = {
     isLoading: false,
@@ -8,22 +8,22 @@ const initialState = {
 }
 
 export const addToCart = createAsyncThunk('cart/addToCart', async ({ productId, quantity }) => {
-    const response = await axios.post(`${apiUrl}/shop/cart`, { productId, quantity }, { withCredentials: true });
+    const response = await httpClient.post(`/shop/cart`, { productId, quantity });
     return response.data;
 });
 
 export const fetchCart = createAsyncThunk('cart/fetchCart', async () => {
-    const response = await axios.get(`${apiUrl}/shop/cart`, { withCredentials: true });
+    const response = await httpClient.get(`/shop/cart`);
     return response.data;
 });
 
 export const updateCart = createAsyncThunk('cart/updateCart', async ({ productId, quantity }) => {
-    const response = await axios.patch(`${apiUrl}/shop/cart`, { productId, quantity }, { withCredentials: true });
+    const response = await httpClient.patch(`/shop/cart`, { productId, quantity });
     return response.data;
 });
 
 export const removeFromCart = createAsyncThunk('cart/removeFromCart', async (productId) => {
-    const response = await axios.delete(`${apiUrl}/shop/cart/${productId}`, { withCredentials: true });
+    const response = await httpClient.delete(`/shop/cart/${productId}`);
     return response.data;
 });
 
@@ -73,6 +73,7 @@ const shopCartSlice = createSlice({
             .addCase(removeFromCart.rejected, (state, action) => {
                 state.isLoading = false;
             })
+            .addCase(logoutUser, () => initialState)
     }
 });
 

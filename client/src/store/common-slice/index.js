@@ -1,6 +1,6 @@
-import { apiUrl } from "@/config";
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
-import axios from "axios";
+import httpClient from "@/config/interceptor";
+import { logoutUser } from "../auth-slice";
 
 const initialState = {
     isLoading: false,
@@ -10,9 +10,8 @@ const initialState = {
 export const getFeatureImages = createAsyncThunk(
     "common/getFeatureImages",
     async () => {
-        const response = await axios.get(
-            `${apiUrl}/common/features`,
-            { withCredentials: true }
+        const response = await httpClient.get(
+            `/common/features`
         );
         return response.data;
     }
@@ -21,10 +20,9 @@ export const getFeatureImages = createAsyncThunk(
 export const addFeatureImage = createAsyncThunk(
     "common/addFeatureImage",
     async (image) => {
-        const response = await axios.post(
-            `${apiUrl}/common/features`,
-            { image },
-            { withCredentials: true }
+        const response = await httpClient.post(
+            `/common/features`,
+            { image }
         );
         return response.data;
     }
@@ -56,6 +54,7 @@ const commonFeaturesSlice = createSlice({
             .addCase(addFeatureImage.rejected, (state) => {
                 state.isLoading = false;
             })
+            .addCase(logoutUser, () => initialState)
     }
 });
 

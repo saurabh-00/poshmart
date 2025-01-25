@@ -4,6 +4,6 @@ const { searchProducts } = require("../../controllers/shop/search");
 
 const router = express.Router();
 
-router.get("/:keyword", searchProducts);
+router.get("/:keyword", auth, searchProducts);
 
 module.exports = router;

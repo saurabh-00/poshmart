@@ -1,6 +1,6 @@
-import { apiUrl } from "@/config";
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
-import axios from "axios";
+import httpClient from "@/config/interceptor";
+import { logoutUser } from "@/store/auth-slice";
 
 const initialState = {
     isLoading: false,
@@ -8,27 +8,27 @@ const initialState = {
 }
 
 export const addAddress = createAsyncThunk('address/addAddress', async (formData) => {
-    const response = await axios.post(`${apiUrl}/shop/address`, formData, { withCredentials: true });
+    const response = await httpClient.post(`/shop/address`, formData);
     return response.data;
 });
 
 export const getAllAddress = createAsyncThunk('address/getAllAddress', async () => {
-    const response = await axios.get(`${apiUrl}/shop/address`, { withCredentials: true });
+    const response = await httpClient.get(`/shop/address`);
     return response.data;
 });
 
 export const updateAddress = createAsyncThunk('address/updateAddress', async ({ addressId, formData }) => {
-    const response = await axios.put(`${apiUrl}/shop/address/${addressId}`, formData, { withCredentials: true });
+    const response = await httpClient.put(`/shop/address/${addressId}`, formData);
     return response.data;
 });
 
 export const deleteAddress = createAsyncThunk('address/deleteAddress', async (addressId) => {
-    const response = await axios.delete(`${apiUrl}/shop/address/${addressId}`, { withCredentials: true });
+    const response = await httpClient.delete(`/shop/address/${addressId}`);
     return response.data;
 });
 
 export const setDefaultAddress = createAsyncThunk('address/setDefaultAddress', async (addressId) => {
-    const response = await axios.patch(`${apiUrl}/shop/address/${addressId}`, { withCredentials: true });
+    const response = await httpClient.patch(`/shop/address/${addressId}`);
     return response.data;
 });
 
@@ -83,6 +83,7 @@ const shopAddressSlice = createSlice({
             .addCase(deleteAddress.rejected, (state, action) => {
                 state.isLoading = false;
             })
+            .addCase(logoutUser, () => initialState)
     }
 });
 

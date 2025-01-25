@@ -1,6 +1,6 @@
-import { apiUrl } from "@/config";
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
-import axios from "axios";
+import httpClient from "@/config/interceptor";
+import { logoutUser } from "@/store/auth-slice";
 
 const initialState = {
     isLoading: true,
@@ -13,12 +13,12 @@ export const fetchAllFilteredProducts = createAsyncThunk('products/filteredProdu
         ...filterParams,
         sortBy: sortParams
     });
-    const response = await axios.get(`${apiUrl}/shop/products?${queryString}`);
+    const response = await httpClient.get(`/shop/products?${queryString}`);
     return response.data;
 });
 
 export const fetchProductDetails = createAsyncThunk('products/productDetails', async (id) => {
-    const response = await axios.get(`${apiUrl}/shop/products/${id}`);
+    const response = await httpClient.get(`/shop/products/${id}`);
     return response.data;
 })
 
@@ -54,6 +54,7 @@ const shopProductsSlice = createSlice({
                 state.productDetails = null;
                 state.isLoading = false;
             })
+            .addCase(logoutUser, () => initialState)
     }
 });
 

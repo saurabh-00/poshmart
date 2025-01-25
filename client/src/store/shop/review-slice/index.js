@@ -1,6 +1,6 @@
-import { apiUrl } from "@/config";
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
-import axios from "axios";
+import httpClient from "@/config/interceptor";
+import { logoutUser } from "@/store/auth-slice";
 
 const initialState = {
     isLoading: true,
@@ -10,9 +10,8 @@ const initialState = {
 export const getAllReviews = createAsyncThunk(
     "reviews/fetchAllReviews",
     async (productId) => {
-        const response = await axios.get(
-            `${apiUrl}/shop/reviews/${productId}`,
-            { withCredentials: true }
+        const response = await httpClient.get(
+            `/shop/reviews/${productId}`
         );
         return response.data;
     }
@@ -22,10 +21,9 @@ export const addReview = createAsyncThunk(
     "reviews/addReview",
     async ({ productId, formData }, { rejectWithValue }) => {
         try {
-            const response = await axios.post(
-                `${apiUrl}/shop/reviews/${productId}`,
-                formData,
-                { withCredentials: true }
+            const response = await httpClient.post(
+                `/shop/reviews/${productId}`,
+                formData
             );
             return response.data;
         } catch (e) {
@@ -65,6 +63,7 @@ const shopReviewsSlice = createSlice({
             .addCase(addReview.rejected, (state) => {
                 state.isLoading = false;
             })
+            .addCase(logoutUser, () => initialState)
     }
 });
 

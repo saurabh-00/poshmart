@@ -1,6 +1,6 @@
-import { apiUrl } from "@/config";
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
-import axios from "axios";
+import httpClient from "@/config/interceptor";
+import { logoutUser } from "@/store/auth-slice";
 
 const initialState = {
     isLoading: false,
@@ -11,22 +11,22 @@ const initialState = {
 }
 
 export const createNewOrder = createAsyncThunk('orders/create', async (orderData) => {
-    const response = await axios.post(`${apiUrl}/shop/orders/create`, orderData, { withCredentials: true });
+    const response = await httpClient.post(`/shop/orders/create`, orderData);
     return response.data;
 });
 
 export const capturePayment = createAsyncThunk('orders/capture', async (paymentData) => {
-    const response = await axios.post(`${apiUrl}/shop/orders/capture`, paymentData, { withCredentials: true });
+    const response = await httpClient.post(`/shop/orders/capture`, paymentData);
     return response.data;
 });
 
 export const getAllUserOrders = createAsyncThunk('orders/userOrders', async () => {
-    const response = await axios.get(`${apiUrl}/shop/orders`, { withCredentials: true });
+    const response = await httpClient.get(`/shop/orders`);
     return response.data;
 });
 
 export const getOrderDetails = createAsyncThunk('orders/orderDetails', async (id) => {
-    const response = await axios.get(`${apiUrl}/shop/orders/${id}`, { withCredentials: true });
+    const response = await httpClient.get(`/shop/orders/${id}`);
     return response.data;
 });
 
@@ -75,6 +75,7 @@ const shopOrdersSlice = createSlice({
                 state.isLoading = false;
                 state.orderDetails = null;
             })
+            .addCase(logoutUser, () => initialState)
     }
 });
 

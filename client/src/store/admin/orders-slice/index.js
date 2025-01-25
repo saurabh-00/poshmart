@@ -1,6 +1,6 @@
-import { apiUrl } from "@/config";
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
-import axios from "axios";
+import httpClient from "@/config/interceptor";
+import { logoutUser } from "@/store/auth-slice";
 
 const initialState = {
     isLoading: false,
@@ -9,17 +9,17 @@ const initialState = {
 };
 
 export const fetchOrdersAdmin = createAsyncThunk('orders/fetchAllAdmin', async () => {
-    const response = await axios.get(`${apiUrl}/admin/orders`, { withCredentials: true });
+    const response = await httpClient.get(`/admin/orders`);
     return response.data;
 });
 
 export const fetchOrderDetailsAdmin = createAsyncThunk('orders/orderDetailsAdmin', async (id) => {
-    const response = await axios.get(`${apiUrl}/admin/orders/${id}`, { withCredentials: true });
+    const response = await httpClient.get(`/admin/orders/${id}`);
     return response.data;
 });
 
 export const updateOrderStatusAdmin = createAsyncThunk('orders/updateStatusAdmin', async ({ id, orderStatus }) => {
-    const response = await axios.patch(`${apiUrl}/admin/orders/${id}`, { orderStatus }, { withCredentials: true });
+    const response = await httpClient.patch(`/admin/orders/${id}`, { orderStatus });
     return response.data;
 });
 
@@ -71,6 +71,7 @@ const adminOrdersSlice = createSlice({
             .addCase(updateOrderStatusAdmin.rejected, (state, action) => {
                 state.isLoading = false;
             })
+            .addCase(logoutUser, () => initialState)
     }
 });
 

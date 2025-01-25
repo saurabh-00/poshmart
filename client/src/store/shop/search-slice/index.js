@@ -1,6 +1,6 @@
-import { apiUrl } from "@/config";
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
-import axios from "axios";
+import httpClient from "@/config/interceptor";
+import { logoutUser } from "@/store/auth-slice";
 
 const initialState = {
     isLoading: false,
@@ -10,9 +10,8 @@ const initialState = {
 export const getSearchResults = createAsyncThunk(
     "search/searchResults",
     async (keyword) => {
-        const response = await axios.get(
-            `${apiUrl}/shop/search/${keyword}`,
-            { withCredentials: true }
+        const response = await httpClient.get(
+            `/shop/search/${keyword}`
         );
         return response.data;
     }
@@ -39,6 +38,7 @@ const shopSearchSlice = createSlice({
                 state.isLoading = false;
                 state.searchResults = [];
             })
+            .addCase(logoutUser, () => initialState)
     }
 });
 
